@@ -40,6 +40,7 @@
 #include <cbang/time/Time.h>
 #include <cbang/log/Logger.h>
 #include <cbang/hw/GPUInfo.h>
+#include <cbang/hw/NVMLLibrary.h>
 #include <cbang/util/WeakCallback.h>
 
 using namespace FAH::Client;
@@ -129,6 +130,22 @@ void GPUResources::detect() {
     if (gpu.getSpecies()) valid.insert(res->getID());
   }
 
+  // Enumerate NVML and match with OpenCL/CUDA/HIP (not sure if any non-CUDA options will be matched)
+  try {
+    for (auto &cd: NVMLLibrary::instance()) {
+      if (!cd.isValid() || !cd.gpu || !cd.isPCIValid()) continue;
+      string id = "gpu:" + cd.getID();
+
+      SmartPointer<GPUResource> res;
+      auto it = resources.find(id);
+      // ONLY set nvml if matched to an existing device
+      if (it != resources.end()) {
+        res = it->second;
+        res->insertBoolean("nvml", true);
+      }
+    }
+  } CATCH_INFO(0);
+
   // Match with existing GPUResources
   bool changed = false;
   for (auto &p: resources) {
@@ -153,4 +170,9 @@ void GPUResources::detect() {
     LOG_INFO(3, "gpus = " << *this);
     app.triggerUpdate();
   }
+}
+
+bool GPUResources::tryGetMeasurements(const char* uuid, cb::GPUMeasurement &meas) {
+  auto &lib = NVMLLibrary::instance();
+  return lib.tryGetMeasurements(uuid, meas);
 }

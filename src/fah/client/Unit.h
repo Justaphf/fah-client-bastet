@@ -36,6 +36,7 @@
 #include <cbang/http/Client.h>
 #include <cbang/http/Request.h>
 #include <cbang/net/URI.h>
+#include <cbang/hw/GPUMeasurement.h>
 
 
 namespace cb {class TailFileToLog;}
@@ -160,6 +161,7 @@ namespace FAH {
       double getKnownProgress() const;
       void updateKnownProgress(uint64_t done, uint64_t total);
       bool isStalled() const;
+      void updateGPUMeasurements();
 
       void clearProgress() {setProgress(0, 0);}
       void setProgress(double done, double total, bool wu = false);
