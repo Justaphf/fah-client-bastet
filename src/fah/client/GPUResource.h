@@ -31,11 +31,15 @@
 #include <cbang/json/Observable.h>
 #include <cbang/hw/ComputeDevice.h>
 #include <cbang/hw/PCIInfo.h>
-
+#include <cbang/hw/GPUMeasurement.h>
 
 namespace FAH {
   namespace Client {
     class Config;
+
+    inline void toPStateString(char* buf, uint8_t state) { sprintf(buf, "P%u", state); }
+    inline void toPcieGenString(char* buf, uint8_t gen) { sprintf(buf, "Gen%u", gen); }
+    inline void toPcieLinkString(char* buf, uint8_t gen, uint8_t width) { sprintf(buf, "Gen%ux%u", gen, width); }
 
     class GPUResource : public cb::JSON::ObservableDict {
       std::string id;
@@ -49,6 +53,8 @@ namespace FAH {
 
       using cb::JSON::ObservableDict::set;
       void set(const std::string &name, const cb::ComputeDevice &cd);
+
+      void setRealTimeMeasurements(const cb::GPUMeasurement &meas);
 
       bool isComputeDeviceSupported(
         const std::string &type, const Config &config) const;
