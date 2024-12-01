@@ -42,6 +42,7 @@
 #include <cbang/log/Logger.h>
 #include <cbang/hw/OpenCLLibrary.h>
 #include <cbang/hw/CUDALibrary.h>
+#include <cbang/hw/NVMLLibrary.h>
 #include <cbang/hw/HIPLibrary.h>
 #include <cbang/util/WeakCallback.h>
 
@@ -189,6 +190,23 @@ void GPUResources::detect() {
     res->set("hip", cd);
   }
 
+  // Enumerate NVML and match with OpenCL/CUDA/HIP (not sure if any non-CUDA options will be matched)
+  try {
+    auto nvmlGPUs = get_gpus<NVMLLibrary>();
+    for (auto& cd : nvmlGPUs) {
+        if (!cd.isPCIValid()) continue;
+        string id = "gpu:" + cd.getPCIID();
+
+        SmartPointer<GPUResource> res;
+        auto it = resources.find(id);
+        // ONLY set nvml if matched to an existing device
+        if (it != resources.end()) {
+            res = it->second;
+            res->insertBoolean("nvml", true);
+        }
+    }
+  } CATCH_INFO(0);
+
   // Enumerate PCI bus
   std::set<string> found;
   PCIInfo info; // Don't use singleton
@@ -232,4 +250,9 @@ void GPUResources::detect() {
     LOG_INFO(3, "gpus = " << *this);
     app.triggerUpdate();
   }
+}
+
+bool GPUResources::tryGetMeasurements(const char* uuid, cb::GPUMeasurement &meas) {
+  auto &lib = NVMLLibrary::instance();
+  return lib.tryGetMeasurements(uuid, meas);
 }
