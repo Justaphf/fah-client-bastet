@@ -528,6 +528,23 @@ void Unit::updateKnownProgress(uint64_t done, uint64_t total) {
 }
 
 
+void Unit::updateGPUMeasurements() {
+  auto gpus = getGPUs();
+  auto &gpuRes = app.getGPUs();
+  for (auto &id: gpus) {
+    auto &gpu = *gpuRes.get(id).cast<GPUResource>();
+    auto &nvml = *gpu.get("nvml");
+    auto uuid = nvml.getString("UUID");
+    auto device = nvml.getU16("device");
+    cb::GPUMeasurement meas; 
+    if (gpuRes.tryGetMeasurements(uuid.c_str(), meas)) {
+      gpu.setMeasurements(meas);
+    }
+    else LOG_WARNING("Failed to retrieve measurements for GPU: " << uuid);
+  }
+}
+
+
 void Unit::setProgress(double done, double total, bool wu) {
   const char *key = wu ? "wu_progress" : "progress";
   double progress = round((total ? done / total : 0) * 1000) / 1000;
@@ -818,6 +835,9 @@ void Unit::monitorRun() {
 
     // Read visualization data
     readViewerData();
+
+    // Update GPU measurements
+    updateGPUMeasurements();
 
     // Update ETA, PPD and progress
     auto eta = TimeInterval(getETA(), true).toString();

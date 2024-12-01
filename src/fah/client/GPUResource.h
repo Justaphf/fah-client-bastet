@@ -31,7 +31,7 @@
 #include <cbang/json/Observable.h>
 #include <cbang/hw/ComputeDevice.h>
 #include <cbang/hw/PCIInfo.h>
-
+#include <cbang/hw/GPUMeasurement.h>
 
 namespace FAH {
   namespace Client {
@@ -47,6 +47,7 @@ namespace FAH {
 
       using cb::JSON::ObservableDict::set;
       void set(const std::string &name, const cb::ComputeDevice &cd);
+      void setMeasurements(const cb::GPUMeasurement &meas);
 
       void writeRequest(cb::JSON::Sink &sink) const;
     };

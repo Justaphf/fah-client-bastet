@@ -41,6 +41,7 @@
 #include <cbang/log/Logger.h>
 #include <cbang/hw/OpenCLLibrary.h>
 #include <cbang/hw/CUDALibrary.h>
+#include <cbang/hw/NVMLLibrary.h>
 #include <cbang/util/WeakCallback.h>
 
 using namespace FAH::Client;
@@ -163,6 +164,23 @@ void GPUResources::detect() {
 
     res->set("cuda", cd);
   }
+
+  // Enumerate NVML and match with CUDA (this should be 1:1)
+  try {
+    auto nvmlGPUs = get_gpus<NVMLLibrary>();
+    for (auto &cd: nvmlGPUs) {
+      if (!cd.isPCIValid()) continue;
+      string id = "gpu:" + cd.getPCIID();
+
+      SmartPointer<GPUResource> res;
+      auto it = resources.find(id);
+      // ONLY set nvml if matched to a CUDA device
+      if (it != resources.end()){
+        res = it->second;
+        res->set("nvml", cd);
+      }
+    }
+  } CATCH_INFO(0);
 #endif // __APPLE__
 
   // Enumerate PCI bus
@@ -203,4 +221,9 @@ void GPUResources::detect() {
     LOG_INFO(3, "gpus = " << *this);
     app.triggerUpdate();
   }
+}
+
+bool GPUResources::tryGetMeasurements(const char* uuid, cb::GPUMeasurement &meas) {
+  auto &lib = NVMLLibrary::instance();
+  return lib.tryGetMeasurements(uuid, meas);
 }

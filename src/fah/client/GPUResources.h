@@ -55,6 +55,7 @@ namespace FAH {
       ~GPUResources();
 
       bool isLoaded() const {return loaded;}
+      bool tryGetMeasurements(const char* uuid, cb::GPUMeasurement &meas);
 
     protected:
       void load(const cb::JSON::Value &gpus);

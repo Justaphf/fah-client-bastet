@@ -67,11 +67,30 @@ void GPUResource::set(const string &name, const ComputeDevice &cd) {
     d->insert("device",   cd.deviceIndex);
     d->insert("compute",  cd.computeVersion.toString());
     d->insert("driver",   cd.driverVersion.toString());
+    if (name == "nvml") d->insert("UUID", cd.name);
     insert(name, d);
 
   } else if (has(name)) erase(name);
 }
 
+void toPStateString(char* buf, uint8_t state) { sprintf(buf, "P%u", state); }
+void toPcieGenString(char* buf, uint8_t gen) { sprintf(buf, "Gen%u", gen); }
+void toPcieLinkString(char* buf, uint8_t gen, uint8_t width) { sprintf(buf, "Gen%ux%u", gen, width); }
+
+void GPUResource::setMeasurements(const cb::GPUMeasurement &meas) {
+  char buf[12];
+  toPcieGenString(buf, meas.maxPCIeLinkGenDevice);
+  insert("pcie_link_device", buf);
+  toPcieLinkString(buf, meas.maxPCIeLinkGen, meas.maxPCIeLinkWidth);
+  insert("pcie_link_system", buf);
+  insert("max_gpu_clock", meas.gpuFreqLimit_MHz);
+  insert("max_mem_clock", meas.memFreqLimit_MHz);
+  insert("cur_gpu_clock", meas.gpuFreq_MHz);
+  insert("cur_mem_clock", meas.memFreq_MHz);
+  insert("cur_temp", meas.gpuTemp_C);
+  toPStateString(buf, meas.pstate);
+  insert("pstate", buf);
+}
 
 void GPUResource::writeRequest(JSON::Sink &sink) const {
   sink.beginDict();
