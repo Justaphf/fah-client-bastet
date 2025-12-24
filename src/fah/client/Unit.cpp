@@ -550,38 +550,8 @@ void Unit::updateGPUMeasurements() {
     auto uuid = gpu.getString("uuid");
     if (!gpu.hasBoolean("nvml") || !gpu.getBoolean("nvml")) continue;
     cb::GPUMeasurement meas; 
-    if (gpuRes.tryGetMeasurements(uuid.c_str(), meas)) {
-      // used on the system display page
+    if (gpuRes.tryGetMeasurements(uuid.c_str(), meas))
       gpu.setRealTimeMeasurements(meas);
-
-      // Used for the summary tab
-      // REVISIT: It would be better to store and grab the same values from one object (the GPU)
-      //          than store twice, once for GPU and once for Unit but at present I'm
-      //          not sure enough about how to correctly implement on the Vue side, nor how the
-      //          resource grouping with multiple GPUs would affect.
-      char buf[12];
-      toPcieGenString(buf, meas.maxPCIeLinkGenDevice);
-      insert("gpu_pcie_dev_max", buf);
-      toPcieLinkString(buf, meas.maxPCIeLinkGen, meas.maxPCIeLinkWidth);
-      insert("gpu_pcie_max", buf);
-      toPcieLinkString(buf, meas.currPCIeLinkGen, meas.currPCIeLinkWidth);
-      insert("gpu_pcie_cur", buf);
-      insert("gpu_clock", meas.gpuFreq_MHz);
-      insert("mem_clock", meas.memFreq_MHz);
-      insert("gpu_temp", meas.gpuTemp_C);
-      toPStateString(buf, meas.pstate);
-      insert("gpu_pstate", buf);
-      insert("gpu_power", meas.currPower_Watts);
-      insert("gpu_pwr_max", meas.maxPower_Watts);
-      insert("gpu_fans", meas.fanCount);
-      if(meas.fanCount > 0)
-      {
-        insert("gpu_fan", meas.currFanSpeed_pct);
-        insert("gpu_fan0", meas.fan0Speed_pct);
-        if(meas.fanCount > 1) insert("gpu_fan1", meas.fan1Speed_pct);
-        if(meas.fanCount > 2) insert("gpu_fan2", meas.fan2Speed_pct);
-      }
-    }
     else LOG_WARNING("Failed to retrieve measurements for GPU: " << uuid);
   }
 }
