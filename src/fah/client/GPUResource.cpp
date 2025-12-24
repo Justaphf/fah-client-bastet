@@ -93,7 +93,6 @@ void GPUResource::setRealTimeMeasurements(const cb::GPUMeasurement &meas) {
   insert("gpu_fans", meas.fanCount);
   if(meas.fanCount > 0)
   {
-    insert("cur_fan_pct", meas.currFanSpeed_pct);
     insert("fan0_pct", meas.fan0Speed_pct);
     if (meas.fanCount > 1) insert("fan1_pct", meas.fan1Speed_pct);
     if (meas.fanCount > 2) insert("fan2_pct", meas.fan2Speed_pct);
