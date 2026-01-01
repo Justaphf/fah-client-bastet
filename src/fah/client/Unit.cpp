@@ -541,19 +541,21 @@ void Unit::updateKnownProgress(uint64_t done, uint64_t total) {
 
 
 void Unit::updateGPUMeasurements() {
-  // Get the GPU(s) assigned to this unit (should only be 1!)
-  auto gpus = getGPUs();
-  // Get all known GPUs in this system (if multiple they should be in separae resource groups)
-  auto &gpuRes = app.getGPUs();
-  for (auto &id: gpus) {
-    auto &gpu = *gpuRes.get(id).cast<GPUResource>();
-    auto uuid = gpu.getString("uuid");
-    if (!gpu.hasBoolean("nvml") || !gpu.getBoolean("nvml")) continue;
-    cb::GPUMeasurement meas; 
-    if (gpuRes.tryGetMeasurements(uuid.c_str(), meas))
-      gpu.setRealTimeMeasurements(meas);
-    else LOG_WARNING("Failed to retrieve measurements for GPU: " << uuid);
-  }
+  try {
+    // Get the GPU(s) assigned to this unit (should only be 1!)
+    auto gpus = getGPUs();
+    // Get all known GPUs in this system (if multiple they should be in separae resource groups)
+    auto &gpuRes = app.getGPUs();
+    for (auto &id: gpus) {
+      auto &gpu = *gpuRes.get(id).cast<GPUResource>();
+      auto uuid = gpu.getString("uuid");
+      if (!gpu.hasBoolean("nvml") || !gpu.getBoolean("nvml")) continue;
+      cb::GPUMeasurement meas; 
+      if (gpuRes.tryGetMeasurements(uuid.c_str(), meas))
+        gpu.setRealTimeMeasurements(meas);
+      else LOG_WARNING("Failed to retrieve measurements for GPU: " << uuid);
+    }
+  } CATCH_WARNING;
 }
 
 
