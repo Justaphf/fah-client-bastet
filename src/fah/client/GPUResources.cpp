@@ -265,6 +265,9 @@ void GPUResources::detect() {
 }
 
 bool GPUResources::tryGetMeasurements(const char* uuid, cb::GPUMeasurement &meas) {
-  auto &lib = NVMLLibrary::instance();
-  return lib.tryGetMeasurements(uuid, meas);
+  try {
+    auto &lib = NVMLLibrary::instance();
+    return lib.tryGetMeasurements(uuid, meas);
+  } CATCH_WARNING;
+  return false;
 }
