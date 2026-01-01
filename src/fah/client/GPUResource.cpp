@@ -29,6 +29,7 @@
 #include "GPUResource.h"
 #include "Config.h"
 
+#include <cbang/Catch.h>
 #include <cbang/String.h>
 #include <cbang/json/JSON.h>
 #include <cbang/hw/GPUVendor.h>
@@ -75,28 +76,30 @@ void GPUResource::set(const string &name, const ComputeDevice &cd) {
 
 void GPUResource::setRealTimeMeasurements(const cb::GPUMeasurement &meas) {
   char buf[12];
-  toPcieGenString(buf, meas.maxPCIeLinkGenDevice);
-  insert("pcie_link_device", buf);
-  toPcieLinkString(buf, meas.maxPCIeLinkGen, meas.maxPCIeLinkWidth);
-  insert("pcie_link_system", buf);
-  toPcieLinkString(buf, meas.currPCIeLinkGen, meas.currPCIeLinkWidth);
-  insert("pcie_link_current", buf);
-  insert("max_gpu_clock", meas.gpuFreqLimit_MHz);
-  insert("max_mem_clock", meas.memFreqLimit_MHz);
-  insert("cur_gpu_clock", meas.gpuFreq_MHz);
-  insert("cur_mem_clock", meas.memFreq_MHz);
-  insert("cur_temp", meas.gpuTemp_C);
-  toPStateString(buf, meas.pstate);
-  insert("pstate", buf);
-  insert("cur_gpu_power", meas.currPower_Watts);
-  insert("max_gpu_power", meas.maxPower_Watts);
-  insert("gpu_fans", meas.fanCount);
-  if(meas.fanCount > 0)
-  {
-    insert("fan0_pct", meas.fan0Speed_pct);
-    if (meas.fanCount > 1) insert("fan1_pct", meas.fan1Speed_pct);
-    if (meas.fanCount > 2) insert("fan2_pct", meas.fan2Speed_pct);
-  }
+  try {
+    toPcieGenString(buf, meas.maxPCIeLinkGenDevice);
+    insert("pcie_link_device", buf);
+    toPcieLinkString(buf, meas.maxPCIeLinkGen, meas.maxPCIeLinkWidth);
+    insert("pcie_link_system", buf);
+    toPcieLinkString(buf, meas.currPCIeLinkGen, meas.currPCIeLinkWidth);
+    insert("pcie_link_current", buf);
+    insert("max_gpu_clock", meas.gpuFreqLimit_MHz);
+    insert("max_mem_clock", meas.memFreqLimit_MHz);
+    insert("cur_gpu_clock", meas.gpuFreq_MHz);
+    insert("cur_mem_clock", meas.memFreq_MHz);
+    insert("cur_temp", meas.gpuTemp_C);
+    toPStateString(buf, meas.pstate);
+    insert("pstate", buf);
+    insert("cur_gpu_power", meas.currPower_Watts);
+    insert("max_gpu_power", meas.maxPower_Watts);
+    insert("gpu_fans", meas.fanCount);
+    if(meas.fanCount > 0)
+    {
+      insert("fan0_pct", meas.fan0Speed_pct);
+      if (meas.fanCount > 1) insert("fan1_pct", meas.fan1Speed_pct);
+      if (meas.fanCount > 2) insert("fan2_pct", meas.fan2Speed_pct);
+    }
+  } CATCH_WARNING;
 }
 
 bool GPUResource::isComputeDeviceSupported(
