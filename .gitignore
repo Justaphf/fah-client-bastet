@@ -48,11 +48,12 @@
 .sconf_temp
 .sconsign.dblite
 config.log
+scons-env-options.py
 
 # client testing byproducts
 /config.xml
 /log*.txt
-/client.db
+/client.db*
 /gpus.json
 /configs
 /logs
