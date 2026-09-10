@@ -66,13 +66,23 @@ void CoreProcess::exec(const vector<string> &_args) {
 
 
 void CoreProcess::stop() {
+  if (killedByClient) return; // Already killed, just waiting for it to exit
+
+  uint64_t now = Time::now();
+
+  // ``stop()`` is called about once a second while stopping.  A long gap
+  // means the client was not running, e.g. system suspend, so restart the
+  // grace period rather than spend it while asleep.
+  if (interruptTime && 60 < now - lastStop) interruptTime = now;
+  lastStop = now;
+
   if (!interruptTime) {
-    interruptTime = Time::now();
+    interruptTime = now;
     interrupt();
 
-  } else if (interruptTime + 60 < Time::now()) {
+  } else if (interruptTime + 60 < now) {
     LOG_WARNING("Core did not shutdown gracefully, killing process");
     kill();
-    interruptTime = 1; // Prevent further interrupt or kill
+    killedByClient = true;
   }
 }

@@ -35,10 +35,18 @@ namespace FAH {
   namespace Client {
     class CoreProcess : public cb::Subprocess {
       const std::string path;
-      uint64_t interruptTime = 0;
+      uint64_t interruptTime  = 0;
+      uint64_t lastStop       = 0;
+      bool     killedByClient = false;
 
     public:
       CoreProcess(const std::string &path);
+
+      // True once the core has been asked to stop, until it exits
+      bool isStopping() const {return interruptTime;}
+
+      // True if we killed the core because it failed to shutdown gracefully
+      bool getKilledByClient() const {return killedByClient;}
 
       void exec(const std::vector<std::string> &args);
       void stop();

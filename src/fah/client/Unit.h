@@ -89,6 +89,9 @@ namespace FAH {
       uint64_t lastKnownProgressUpdate        = 0;
       uint64_t lastKnownProgressUpdateRunTime = 0;
 
+      unsigned stalls    = 0; // Consecutive stalls without progress
+      uint64_t stallDone = 0; // Progress at the last detected stall
+
       Unit(App &app);
 
     public:
@@ -155,6 +158,7 @@ namespace FAH {
       void skewTimer();
       double getKnownProgress() const;
       void updateKnownProgress(uint64_t done, uint64_t total);
+      bool isStalled() const;
 
       void clearProgress() {setProgress(0, 0);}
       void setProgress(double done, double total, bool wu = false);

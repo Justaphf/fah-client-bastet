@@ -443,6 +443,11 @@ void Unit::next() {
   // Monitor running core process
   if (process.isSet()) {
     if (process->isRunning()) {
+      // Once asked to stop, see the core all the way to exit, even if the
+      // stop condition has since cleared.  Otherwise a core that hangs in
+      // shutdown is neither killed nor folding.
+      if (process->isStopping()) return stopRun();
+
       // Only interrupt after minimum run time to give the core time to
       // install it's interrupt handlers.
       if (isPaused() || getState() != UNIT_RUN || getCPUs() != runningCPUs) {
@@ -495,6 +500,7 @@ void Unit::processStarted(const SmartPointer<CoreProcess> &process) {
   this->process = process;
   lastSkewTimer = processStartTime = Time::now();
   lastKnownDone = lastKnownTotal = lastKnownProgressUpdate = clockSkew = 0;
+  lastKnownProgressUpdateRunTime = getRunTime(); // Start the stall timer
   insert("start_time", Time(processStartTime).toString());
   insert("pid", pid);
 }
@@ -537,7 +543,22 @@ void Unit::updateKnownProgress(uint64_t done, uint64_t total) {
     lastKnownTotal                 = total;
     lastKnownProgressUpdate        = Time::now();
     lastKnownProgressUpdateRunTime = getRunTime();
+
+    // Only progress past where it stalled proves the core recovered
+    if (stallDone < done) stalls = 0;
   }
+}
+
+
+bool Unit::isStalled() const {
+  // Cores report progress about every 1% of the run.  Allow 10x that, with a
+  // floor for short WUs and a cap for long ones.  Run time excludes detected
+  // system suspend, so this does not trip on a sleeping machine.
+  uint64_t timeout = std::min((uint64_t)Time::SEC_PER_HOUR,
+    std::max<uint64_t>(10 * Time::SEC_PER_MIN, getRunTimeEstimate() / 10));
+
+  return (int64_t)timeout <
+    (int64_t)getRunTime() - (int64_t)lastKnownProgressUpdateRunTime;
 }
 
 
@@ -795,7 +816,23 @@ void Unit::finalizeRun() {
   }
 #endif
 
-  if (process->getWasKilled()) {
+  // A core we killed because it would not shutdown is not a crash.  Restart
+  // it and let it resume from its last checkpoint.  The core validates the
+  // checkpoint on startup and asks for a restart if it is invalid.
+  if (process->getKilledByClient()) {
+    const unsigned maxStalls = 3;
+
+    if (stalls <= maxStalls) {
+      LOG_WARNING("Core was killed after it failed to shutdown gracefully, "
+        "restarting from the last checkpoint");
+      code = ExitCode::CORE_RESTART;
+
+    } else {
+      LOG_ERROR("Core stalled " << stalls << " times without making progress");
+      code = ExitCode::FAILED_1;
+    }
+
+  } else if (process->getWasKilled()) {
     LOG_ERROR("Core was killed");
     code = ExitCode::FAILED_1;
   }
@@ -814,8 +851,15 @@ void Unit::finalizeRun() {
   LOG(CBANG_LOG_DOMAIN, ok ? LOG_INFO_LEVEL(1) : Logger::LEVEL_ERROR,
       "Core returned " << code << " (" << (unsigned)code << ')');
 
-  // Ignore failed core exits when shutting down
-  if (code == ExitCode::FAILED_1 && app.shouldQuit()) return;
+  // Ignore failed or restarting core exits when shutting down
+  if (app.shouldQuit() &&
+      (code == ExitCode::FAILED_1 || code == ExitCode::CORE_RESTART)) return;
+
+  // A core that detected its own stall can resume from its last checkpoint
+  if (code == ExitCode::WU_STALLED) {
+    LOG_WARNING("Core stalled, restarting from the last checkpoint");
+    code = ExitCode::CORE_RESTART;
+  }
 
   // WU not complete if core was restarted or interrupted
   if (code == ExitCode::INTERRUPTED)  return;
@@ -875,6 +919,16 @@ void Unit::monitorRun() {
     if (eta != getString("eta", "")) insert("eta", eta);
     if (ppd != getU64("ppd", -1))    insert("ppd", ppd);
     setProgress(getEstimatedProgress(), 1, true);
+
+    // Stop a core that has stopped making progress
+    if (isStalled()) {
+      LOG_WARNING("Core has not reported progress in "
+        << TimeInterval(getRunTime() - lastKnownProgressUpdateRunTime)
+        << ", stopping it");
+      stallDone = lastKnownDone;
+      stalls++;
+      return stopRun();
+    }
 
     // Clear retries after running long enough
     if (retries && Time::SEC_PER_MIN * 2 < getRunTimeDelta()) retries = 0;

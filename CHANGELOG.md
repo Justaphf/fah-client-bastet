@@ -21,6 +21,10 @@ Folding@home Client Changelog
  - Validate the length of encrypted message IVs from the node.
  - Close a node session that is replaced by a new session with the same ID.
  - Don't request an assignment for a WU with no CPUs or GPUs.
+ - Always kill stuck core, even if the stop condition clears.  re:#448
+ - Don't count core's shutdown grace period during system suspend. re:#448
+ - Allow killed core to restart from last checkpoint.  re:#448
+ - Detect and restart a core that stops reporting progress.  re:#448, #435
 
 ## v8.5.6
  - Failing ``config.xml`` load logs error but is now non-fatal.
