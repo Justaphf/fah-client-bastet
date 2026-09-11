@@ -712,6 +712,7 @@ void Unit::readViewerData() {
 
   try {
     if (topology.isNull()) readViewerTop();
+    if (viewerFail < 0) return; // Topology may have disabled visualization
     return readViewerFrame();
   } CATCH_DEBUG(3);
 
@@ -743,6 +744,14 @@ void Unit::readViewerTop() {
 
     topology = JSON::Reader::parseFile(filename);
     viewerFail = 0;
+
+    // Keep the empty topology so clients can tell "nothing to visualize"
+    // apart from "not loaded yet", but stop reading the empty frames.
+    if (!topology->has("atoms") || topology->get("atoms")->empty()) {
+      LOG_WARNING("Visualization topology has no atoms, "
+        "disabling visualization");
+      viewerFail = -1;
+    }
   }
 }
 
@@ -767,7 +776,11 @@ void Unit::readViewerFrame() {
       LOG_WARNING("Visualization frame " << viewerFrame
         << " unchanged, skipping");
 
-    else if (!frame->empty()) {
+    else if (frame->empty())
+      LOG_DEBUG(3, "Visualization frame " << viewerFrame << " is empty, "
+        "skipping");
+
+    else {
       frames.push_back(frame);
       insert("frames", (uint32_t)frames.size());
       viewerBytes += bytes;

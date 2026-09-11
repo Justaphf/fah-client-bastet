@@ -25,12 +25,12 @@ Folding@home Client Changelog
  - Don't count core's shutdown grace period during system suspend. re:#448
  - Allow killed core to restart from last checkpoint.  re:#448
  - Detect and restart a core that stops reporting progress.  re:#448, #435
+ - Report usable memory rather than just free memory. re:#123
 
 ## v8.5.6
  - Failing ``config.xml`` load logs error but is now non-fatal.
  - Install ``fahctl`` python script on Windows. @kbernhagen
  - Count an upload retry and delay after failing to upload to all WS and CS.
- - Report usable memory rather than just free memory. re:#123
 
 ## v8.5.5
  - Return to less specific udev scanning re:#394
