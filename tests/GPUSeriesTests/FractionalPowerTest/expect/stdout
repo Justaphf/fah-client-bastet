@@ -1,0 +1,18 @@
+series={
+  "bucket": 60,
+  "fields": ["power"],
+  "states": [],
+  "rows": [
+    [1800000000, 20, [28.4, 28.892, 28.646]]
+  ]
+}
+checkpoint={
+  "bucket": 60,
+  "fields": ["power"],
+  "states": [],
+  "rows": [
+    [1800000000, 20, [28.4, 28.892, 572.92, 20]]
+  ]
+}
+uninterrupted=same
+restored=same

@@ -175,6 +175,61 @@ bool Config::getGPUTelemetryHistory() const {
 }
 
 
+unsigned Config::getGPUTelemetryBucket() const {
+  double secs = getNumber("gpu_telemetry_bucket", 60);
+  if (std::isnan(secs)) return 60;
+  if (secs < 10)   return 10;
+  if (3600 < secs) return 3600;
+  return (unsigned)secs;
+}
+
+
+unsigned Config::getGPUTelemetrySeriesMax() const {
+  double count = getNumber("gpu_telemetry_series_max", 500);
+  if (std::isnan(count)) return 500;
+  if (count < 0)      return 0;
+  if (100000 < count) return 100000;
+  return (unsigned)count;
+}
+
+
+map<unsigned, unsigned> Config::getGPUTelemetryAging() const {
+  // Age in days to bucket length, the longest if days repeat
+  map<unsigned, unsigned> tiers;
+  if (!hasList("gpu_telemetry_aging")) return tiers;
+
+  unsigned invalid = 0;
+  for (auto &tier: *get("gpu_telemetry_aging")) {
+    if (!tier->isDict() || !tier->hasNumber("days") ||
+        !tier->hasNumber("bucket")) {
+      invalid++;
+      continue;
+    }
+
+    double days = tier->getNumber("days");
+    double secs = tier->getNumber("bucket");
+    if (std::isnan(days) || std::isnan(secs)) {
+      invalid++;
+      continue;
+    }
+
+    days = days < 1 ? 1 : (36500 < days ? 36500 : days);
+    secs = secs < 10 ? 10 : (3600 < secs ? 3600 : secs);
+
+    auto &bucket = tiers[(unsigned)days];
+    if (bucket < secs) bucket = (unsigned)secs;
+  }
+
+  string list = get("gpu_telemetry_aging")->toString();
+  if (invalid && list != agingWarned)
+    LOG_WARNING("Ignoring " << invalid << " invalid gpu_telemetry_aging "
+                "entries");
+  agingWarned = invalid ? list : "";
+
+  return tiers;
+}
+
+
 bool Config::isGPUMonitored(const string &id) const {
   if (!hasDict("gpu_telemetry")) return false;
   return get("gpu_telemetry")->getBoolean(id, false);

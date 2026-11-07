@@ -1,0 +1,12 @@
+series={
+  "bucket": 40,
+  "fields": ["gpu_clock"],
+  "states": ["pstate"],
+  "rows": [
+    [1800000000, 40, [1010, 1040, 1025], 0],
+    [1800000040, 40, [1050, 1080, 1065], 2],
+    [1800000080, 20, [1090, 1100, 1095], 8]
+  ]
+}
+uninterrupted=same
+restored=same

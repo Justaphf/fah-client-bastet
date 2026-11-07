@@ -1,0 +1,9 @@
+{
+  "bucket": 60,
+  "samples": [
+    {"time": 1800000010, "weight": 1, "gpu_clock": 1400, "power": 35, "pstate": 0, "fans": [50]},
+    {"time": 1800000011, "weight": 1, "gpu_clock": 1410, "power": 37, "pstate": 0, "fans": [52]},
+    {"time": 1800000070, "weight": 1, "gpu_clock": 1420},
+    {"time": 1800000130, "weight": 1, "gpu_clock": 1430, "power": 40, "mem_util": 0, "pstate": 0, "pcie_gen": 3, "fans": [55, 30]}
+  ]
+}

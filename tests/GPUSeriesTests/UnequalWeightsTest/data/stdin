@@ -1,0 +1,10 @@
+{
+  "bucket": 60,
+  "samples": [
+    {"time": 1800000010, "weight": 1, "gpu_clock": 1000, "power": 20, "temp": 60, "gpu_util": 50},
+    {"time": 1800000011, "weight": 4, "gpu_clock": 1400, "power": 40, "temp": 70, "gpu_util": 100},
+    {"time": 1800000015, "weight": 5, "gpu_clock": 1200, "power": 30, "temp": 65, "gpu_util": 80},
+    {"time": 1800000070, "weight": 3, "gpu_clock": 1100, "power": 25, "temp": 64, "gpu_util": 90},
+    {"time": 1800000073, "weight": 1, "gpu_clock": 1500, "power": 45, "temp": 75, "gpu_util": 99}
+  ]
+}

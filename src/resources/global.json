@@ -5,6 +5,9 @@
   "cause":                    "any",
   "gpu_telemetry_interval":   1,
   "gpu_telemetry_history":    false,
+  "gpu_telemetry_bucket":     60,
+  "gpu_telemetry_series_max": 500,
+  "gpu_telemetry_aging":      [],
   "gpu_telemetry":            {},
   "energy_rate":              0.17
 }

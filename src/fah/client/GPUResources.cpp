@@ -79,8 +79,10 @@ GPUResources::GPUResources(App &app) :
   app(app),
   updateEvent(app.getEventBase().newEvent([this] {update();}, 0)),
   detectEvent(app.getEventBase().newEvent([this] {detect();}, 0)),
-  telemetryEvent(app.getEventBase().newEvent([this] {telemetry();}, 0)) {
+  telemetryEvent(app.getEventBase().newEvent([this] {telemetry();}, 0)),
+  series(new GPUSeriesSink(app)) {
   sinks.push_back(new UnitStatsSink(app));
+  sinks.push_back(series);
   updateEvent->activate();
 }
 

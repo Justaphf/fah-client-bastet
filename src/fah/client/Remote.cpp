@@ -35,6 +35,7 @@
 #include "Unit.h"
 #include "Config.h"
 #include "Group.h"
+#include "GPUResources.h"
 
 #include <cbang/Catch.h>
 #include <cbang/log/Logger.h>
@@ -162,6 +163,15 @@ void Remote::onMessage(const JSON::ValuePtr &msg) {
   } else if (cmd == "wus") {
     sendWUsEnabled = msg->getBoolean("enable", false);
     sendWUs();
+
+  } else if (cmd == "series") {
+    string id = msg->getString("unit", "");
+
+    JSON::ValuePtr changes = new JSON::List;
+    changes->append("series");
+    changes->append(id);
+    changes->append(app.getGPUs().getSeries().get(id));
+    sendChanges(changes);
 
   } else {
     LOG_WARNING("Received unsupported remote command '" << cmd << "'");

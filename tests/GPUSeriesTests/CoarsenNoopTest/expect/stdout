@@ -1,0 +1,16 @@
+coarsen=60 unchanged
+coarsen=30 unchanged
+coarsen=300 merged
+coarsen=300 unchanged
+coarsen=120 unchanged
+series={
+  "bucket": 300,
+  "fields": ["gpu_clock"],
+  "states": ["pstate"],
+  "rows": [
+    [1800000000, 120, [1000, 1200, 1100], 0],
+    [1800000300, 20, [1500, 1500, 1500], 8]
+  ]
+}
+uninterrupted=same
+restored=same

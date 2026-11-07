@@ -1,0 +1,17 @@
+{
+  "bucket": 10,
+  "limit": 4,
+  "reload": [4],
+  "samples": [
+    {"time": 1800000010, "weight": 10, "gpu_clock": 1010, "pstate": 0},
+    {"time": 1800000020, "weight": 10, "gpu_clock": 1020, "pstate": 0},
+    {"time": 1800000030, "weight": 10, "gpu_clock": 1030, "pstate": 2},
+    {"time": 1800000040, "weight": 10, "gpu_clock": 1040, "pstate": 0},
+    {"time": 1800000050, "weight": 10, "gpu_clock": 1050, "pstate": 2},
+    {"time": 1800000060, "weight": 10, "gpu_clock": 1060, "pstate": 2},
+    {"time": 1800000070, "weight": 10, "gpu_clock": 1070, "pstate": 2},
+    {"time": 1800000080, "weight": 10, "gpu_clock": 1080, "pstate": 0},
+    {"time": 1800000090, "weight": 10, "gpu_clock": 1090, "pstate": 8},
+    {"time": 1800000100, "weight": 10, "gpu_clock": 1100, "pstate": 8}
+  ]
+}
