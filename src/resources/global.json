@@ -1,7 +1,9 @@
 {
-  "user":             "Anonymous",
-  "team":             0,
-  "passkey":          "",
-  "cause":            "any",
-  "wu_display_limit": 500
+  "user":                       "Anonymous",
+  "team":                       0,
+  "passkey":                    "",
+  "cause":                      "any",
+  "gpu_telemetry_interval":     1,
+  "gpu_telemetry":              {},
+  "wu_display_limit":           500
 }

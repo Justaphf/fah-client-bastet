@@ -161,6 +161,21 @@ void Config::disableGPU(const string &id) {
 }
 
 
+unsigned Config::getGPUTelemetryInterval() const {
+  double secs = getNumber("gpu_telemetry_interval", 1);
+  if (std::isnan(secs)) return 1; // NaN slips past both bounds
+  if (secs < 1)  return 1;
+  if (60 < secs) return 60;
+  return (unsigned)secs;
+}
+
+
+bool Config::isGPUMonitored(const string &id) const {
+  if (!hasDict("gpu_telemetry")) return false;
+  return get("gpu_telemetry")->getBoolean(id, false);
+}
+
+
 unsigned Config::getWUDisplayLimit() const {
   double count = getNumber("wu_display_limit", 500);
   if (std::isnan(count)) return 500;
