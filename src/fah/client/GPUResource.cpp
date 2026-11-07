@@ -29,9 +29,12 @@
 #include "GPUResource.h"
 #include "Config.h"
 
+#include <cbang/Exception.h>
 #include <cbang/String.h>
 #include <cbang/json/JSON.h>
+#include <cbang/log/Logger.h>
 #include <cbang/hw/GPUVendor.h>
+#include <cbang/hw/NVMLLibrary.h>
 
 using namespace FAH::Client;
 using namespace cb;
@@ -40,6 +43,12 @@ using namespace std;
 namespace {
   string getGPUVendorName(uint16_t id) {
     return String::toLower(GPUVendor((GPUVendor::enum_t)id).toString());
+  }
+
+
+  template <typename T>
+  void insertNonZero(JSON::Value &d, const string &key, T value) {
+    if (value) d.insert(key, value);
   }
 }
 
@@ -59,10 +68,55 @@ GPUResource::GPUResource(const GPUDevice &gpu) : id("gpu:" + gpu.getID()) {
   if (!uuid.empty()) insert("uuid", uuid);
 
   insertBoolean("supported", gpu.isSupported());
+  if (gpu.getNVML().isValid()) insertBoolean("nvml", true);
 
   insertComputeDevice("cuda",   gpu.getCUDA());
   insertComputeDevice("hip",    gpu.getHIP());
   insertComputeDevice("opencl", gpu.getOpenCL());
+}
+
+
+JSON::ValuePtr GPUResource::readTelemetry(GPUMeasurement &m) {
+  if (!getBoolean("nvml", false) || !hasString("uuid")) return 0;
+
+  try {
+    m = NVMLLibrary::instance().getMeasurement(getString("uuid"));
+
+    JSON::ValuePtr d = new JSON::Dict;
+    insertNonZero(*d, "gpu_clock",           m.gpuClock);
+    insertNonZero(*d, "gpu_clock_max",       m.gpuClockMax);
+    insertNonZero(*d, "mem_clock",           m.memClock);
+    insertNonZero(*d, "mem_clock_max",       m.memClockMax);
+    insertNonZero(*d, "power",               m.power);
+    insertNonZero(*d, "power_limit",         m.powerLimit);
+    insertNonZero(*d, "temp",                m.temperature);
+    if (0 <= m.utilization)    d->insert("gpu_util", m.utilization);
+    if (0 <= m.memUtilization) d->insert("mem_util", m.memUtilization);
+    if (0 <= m.pstate)         d->insert("pstate",   m.pstate);
+    insertNonZero(*d, "pcie_gen",            m.pcieGen);
+    insertNonZero(*d, "pcie_gen_max",        m.pcieGenMax);
+    insertNonZero(*d, "pcie_gen_device_max", m.pcieGenDeviceMax);
+    insertNonZero(*d, "pcie_width",          m.pcieWidth);
+    insertNonZero(*d, "pcie_width_max",      m.pcieWidthMax);
+
+    auto fans = d->createList();
+    for (auto speed: m.fans) fans->append(speed);
+    d->insert("fans", fans);
+
+    telemetryFailed = false;
+    return d;
+
+  } catch (const Exception &e) {
+    // Warn once, then stay quiet until a read succeeds
+    if (!telemetryFailed)
+      LOG_WARNING("Failed to read telemetry for " << getID() << ": "
+                  << e.getMessage());
+
+    telemetryFailed = true;
+    clearTelemetry();
+  }
+
+  return 0;
 }
 
 

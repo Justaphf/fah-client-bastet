@@ -35,6 +35,8 @@
 #include <cbang/json/Reader.h>
 #include <cbang/os/SystemInfo.h>
 
+#include <cmath>
+
 using namespace FAH::Client;
 using namespace cb;
 using namespace std;
@@ -156,6 +158,21 @@ bool Config::isComputeDeviceEnabled(const string &type) const {
 void Config::disableGPU(const string &id) {
   auto &gpus = *get("gpus");
   if (gpus.has(id)) gpus.erase(id);
+}
+
+
+unsigned Config::getGPUTelemetryInterval() const {
+  double secs = getNumber("gpu_telemetry_interval", 1);
+  if (std::isnan(secs)) return 1; // NaN slips past both bounds
+  if (secs < 1)  return 1;
+  if (60 < secs) return 60;
+  return (unsigned)secs;
+}
+
+
+bool Config::isGPUMonitored(const string &id) const {
+  if (!hasDict("gpu_telemetry")) return false;
+  return get("gpu_telemetry")->getBoolean(id, false);
 }
 
 

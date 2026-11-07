@@ -69,6 +69,8 @@ namespace FAH {
       bool isGPUEnabled(const std::string &id) const;
       bool isComputeDeviceEnabled(const std::string &type) const;
       void disableGPU(const std::string &id);
+      unsigned getGPUTelemetryInterval() const;
+      bool isGPUMonitored(const std::string &id) const;
 
       // From JSON::Value
       cb::JSON::Value::iterator insert(const std::string &key,

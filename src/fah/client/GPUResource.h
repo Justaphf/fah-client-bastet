@@ -30,6 +30,7 @@
 
 #include <cbang/json/Observable.h>
 #include <cbang/hw/GPUDevice.h>
+#include <cbang/hw/GPUMeasurement.h>
 
 
 namespace FAH {
@@ -38,11 +39,15 @@ namespace FAH {
 
     class GPUResource : public cb::JSON::ObservableDict {
       std::string id;
+      bool telemetryFailed = false;
 
     public:
       GPUResource(const cb::GPUDevice &gpu);
 
       const std::string &getID() const {return id;}
+
+      cb::JSON::ValuePtr readTelemetry(cb::GPUMeasurement &m);
+      void clearTelemetry() {erase("telemetry");}
 
       bool isComputeDeviceSupported(
         const std::string &type, const Config &config) const;

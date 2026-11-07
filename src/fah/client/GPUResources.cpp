@@ -29,6 +29,7 @@
 #include "GPUResources.h"
 
 #include "App.h"
+#include "Config.h"
 #include "Units.h"
 #include "GPUResource.h"
 #include "OS.h"
@@ -55,7 +56,8 @@ namespace {
 GPUResources::GPUResources(App &app) :
   app(app),
   updateEvent(app.getEventBase().newEvent([this] {update();}, 0)),
-  detectEvent(app.getEventBase().newEvent([this] {detect();}, 0)) {
+  detectEvent(app.getEventBase().newEvent([this] {detect();}, 0)),
+  telemetryEvent(app.getEventBase().newEvent([this] {telemetry();}, 0)) {
   updateEvent->activate();
 }
 
@@ -133,6 +135,11 @@ void GPUResources::detect() {
   bool changed = false;
   for (auto &p: resources) {
     auto &id = p.first;
+    auto &res = *p.second;
+
+    // Keep live telemetry, it is not a detection change
+    if (res.getBoolean("nvml", false) && has(id) && get(id)->has("telemetry"))
+      res.insert("telemetry", get(id)->get("telemetry")->copy(true));
 
     if (!has(id) || get(id)->toString() != p.second->toString()) {
       insert(id, p.second);
@@ -148,9 +155,37 @@ void GPUResources::detect() {
   if (retry && app.getUptime() < maxRetryTime)
     detectEvent->add(5); // Try again later
 
+  if (!detected) telemetryEvent->activate();
+
   detected = true;
   if (changed) {
     LOG_INFO(3, "gpus = " << *this);
     app.triggerUpdate();
+  }
+}
+
+
+void GPUResources::telemetry() {
+  // Sample devices on their own timer so readings do not depend on a WU
+  auto &config = *app.getConfig();
+  unsigned interval = config.getGPUTelemetryInterval();
+  telemetryEvent->add(interval);
+
+  for (auto &v: *this) {
+    auto &res = *v.cast<GPUResource>();
+    auto &id  = res.getID();
+
+    if (res.getBoolean("nvml", false) && config.isGPUMonitored(id)) {
+      GPUMeasurement m;
+      auto d = res.readTelemetry(m);
+
+      if (d.isSet()) {
+        res.insert("telemetry", d); // No change notification if equal
+        continue;
+      }
+    }
+
+    // Never leave a stale reading behind
+    if (res.has("telemetry")) res.clearTelemetry();
   }
 }

@@ -1,6 +1,8 @@
 {
-  "user":    "Anonymous",
-  "team":    0,
-  "passkey": "",
-  "cause":   "any"
+  "user":                     "Anonymous",
+  "team":                     0,
+  "passkey":                  "",
+  "cause":                    "any",
+  "gpu_telemetry_interval":   1,
+  "gpu_telemetry":            {}
 }

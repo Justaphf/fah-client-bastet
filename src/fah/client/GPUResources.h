@@ -51,6 +51,7 @@ namespace FAH {
 
       cb::Event::EventPtr updateEvent;
       cb::Event::EventPtr detectEvent;
+      cb::Event::EventPtr telemetryEvent;
       cb::HTTP::Client::RequestPtr pr;
 
     public:
@@ -64,6 +65,7 @@ namespace FAH {
       void response(cb::HTTP::Request &req);
       void update();
       void detect();
+      void telemetry();
     };
   }
 }
