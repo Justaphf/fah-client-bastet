@@ -170,6 +170,11 @@ unsigned Config::getGPUTelemetryInterval() const {
 }
 
 
+bool Config::getGPUTelemetryHistory() const {
+  return getBoolean("gpu_telemetry_history", false);
+}
+
+
 bool Config::isGPUMonitored(const string &id) const {
   if (!hasDict("gpu_telemetry")) return false;
   return get("gpu_telemetry")->getBoolean(id, false);

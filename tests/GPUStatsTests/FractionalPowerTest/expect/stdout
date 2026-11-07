@@ -1,0 +1,16 @@
+summary={
+  "seconds": 20,
+  "samples": 2,
+  "power": {"min": 28, "max": 29, "mean": 28.5, "median": 28, "p95": 29},
+  "energy_joules": 572.92,
+  "energy_wh": 0.159144
+}
+live=0.080256 0.159144
+live.saved=same
+checkpoint={
+  "seconds": 20,
+  "samples": 2,
+  "power": {"28": 10, "29": 10},
+  "energy_joules": 572.92
+}
+restored=same

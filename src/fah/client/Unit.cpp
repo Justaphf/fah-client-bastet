@@ -154,6 +154,18 @@ Unit::Unit(App &app, const JSON::ValuePtr &data) : Unit(app) {
 
   // Check that we still have the required core
   if (getState() == UNIT_RUN) setState(UNIT_CORE);
+
+  // Bad statistics must not cost the WU
+  if (data->hasDict("gpu_stats"))
+    try {
+      auto &saved = *data->get("gpu_stats");
+      map<string, GPUStats> stats;
+
+      for (auto it = saved.begin(); it != saved.end(); it++)
+        stats[it.key()].read(**it);
+
+      gpuStats = stats;
+    } CATCH_WARNING;
 }
 
 
@@ -252,6 +264,18 @@ bool Unit::hasGPU(const string &id) const {
     if (gpuID == id) return true;
 
   return false;
+}
+
+
+void Unit::recordGPUSample(const string &id, const GPUMeasurement &m,
+                           double seconds) {
+  gpuStats[id].add(m, seconds);
+}
+
+
+double Unit::getGPUEnergyWh(const string &id) const {
+  auto it = gpuStats.find(id);
+  return it == gpuStats.end() ? 0 : it->second.getEnergyWh();
 }
 
 
@@ -406,6 +430,7 @@ void Unit::dumpWU() {
 void Unit::save() {
   if (getState() < UNIT_CORE || getState() == UNIT_DONE) return;
   lastSave = Time::now();
+  updateGPUStats();
 
   // Save as if the core stopped now so run time survives a crash.
   // Must be a deep copy, a shallow copy would steal observable children.
@@ -419,6 +444,19 @@ void Unit::save() {
   writer.beginDict();
   writer.insert("state", *state);
   if (data.isSet()) writer.insert("data", *data);
+
+  // A checkpoint, samples since the last save are lost on a crash
+  if (!gpuStats.empty()) {
+    writer.insertDict("gpu_stats");
+
+    for (auto &p: gpuStats) {
+      writer.beginInsert(p.first);
+      p.second.write(writer);
+    }
+
+    writer.endDict();
+  }
+
   writer.endDict();
   writer.flush();
 
@@ -427,6 +465,24 @@ void Unit::save() {
 
 
 void Unit::cancelRequest() {pr.release();}
+
+
+void Unit::updateGPUStats() {
+  // Refreshed only when saved or logged to avoid a change every sample
+  if (gpuStats.empty()) return;
+
+  // The stored run time only advances when the core stops
+  uint64_t runTime = getRunTime();
+
+  auto d = createDict();
+  for (auto &p: gpuStats) {
+    auto summary = p.second.getSummary();
+    summary->insert("run_time", runTime);
+    d->insert(p.first, summary);
+  }
+
+  insert("gpu_stats", d);
+}
 
 
 void Unit::setState(UnitState state) {
@@ -983,6 +1039,7 @@ void Unit::clean(const string &result) {
     // Log WU
     insert("end_time", Time().toString());
     insert("result", result);
+    updateGPUStats();
     TRY_CATCH_ERROR(app.logWU(*this));
 
     // Remove from disk

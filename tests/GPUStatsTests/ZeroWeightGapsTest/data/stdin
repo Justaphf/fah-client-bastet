@@ -1,0 +1,25 @@
+{
+  "samples": [
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 1, "gpu_clock": 1310, "mem_clock": 5000, "power": 31, "temp": 70, "gpu_util": 100, "mem_util": 50, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [10, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 2, "gpu_clock": 1320, "mem_clock": 5000, "power": 32, "temp": 69, "gpu_util": 100, "mem_util": 60, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [20, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 3, "gpu_clock": 1330, "mem_clock": 5000, "power": 33, "temp": 68, "gpu_util": 100, "mem_util": 50, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [30, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 4, "gpu_clock": 1340, "mem_clock": 5000, "power": 34, "temp": 67, "gpu_util": 100, "mem_util": 60, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [40, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 5, "gpu_clock": 1350, "mem_clock": 5000, "power": 35, "temp": 66, "gpu_util": 100, "mem_util": 50, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [50, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 6, "gpu_clock": 1360, "mem_clock": 5000, "power": 36, "temp": 65, "gpu_util": 100, "mem_util": 60, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [60, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 7, "gpu_clock": 1370, "mem_clock": 5000, "power": 37, "temp": 64, "gpu_util": 100, "mem_util": 50, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [70, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 8, "gpu_clock": 1380, "mem_clock": 5000, "power": 38, "temp": 63, "gpu_util": 100, "mem_util": 60, "pstate": 0, "pcie_gen": 3, "pcie_width": 16, "fans": [80, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 9, "gpu_clock": 1390, "mem_clock": 5000, "power": 39, "temp": 62, "gpu_util": 100, "mem_util": 50, "pstate": 8, "pcie_gen": 3, "pcie_width": 16, "fans": [90, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]},
+    {"weight": 10, "gpu_clock": 1400, "mem_clock": 5000, "power": 40, "temp": 61, "gpu_util": 100, "mem_util": 60, "pstate": 8, "pcie_gen": 3, "pcie_width": 16, "fans": [100, 0]},
+    {"weight": 0, "gpu_clock": 210, "mem_clock": 405, "power": 5, "temp": 40, "gpu_util": 0, "mem_util": 0, "pstate": 8, "pcie_gen": 1, "pcie_width": 4, "fans": [0, 0]}
+  ]
+}

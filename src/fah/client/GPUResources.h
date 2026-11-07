@@ -29,10 +29,15 @@
 #pragma once
 
 #include "GPUResource.h"
+#include "GPUSampleSink.h"
 
 #include <cbang/hw/GPUIndex.h>
 #include <cbang/event/Event.h>
 #include <cbang/http/Client.h>
+
+#include <map>
+#include <set>
+#include <vector>
 
 
 namespace FAH {
@@ -52,7 +57,11 @@ namespace FAH {
       cb::Event::EventPtr updateEvent;
       cb::Event::EventPtr detectEvent;
       cb::Event::EventPtr telemetryEvent;
+      unsigned telemetryInterval = 0;
+      std::map<std::string, double> lastSample; // By GPU ID
       cb::HTTP::Client::RequestPtr pr;
+
+      std::vector<cb::SmartPointer<GPUSampleSink>> sinks;
 
     public:
       GPUResources(App &app);
@@ -60,12 +69,18 @@ namespace FAH {
 
       bool isDetected() const {return detected;}
 
+      static double getSampleWeight(double last, double now,
+                                    unsigned interval);
+
     protected:
       void load(const cb::JSON::Value &gpus);
       void response(cb::HTTP::Request &req);
       void update();
       void detect();
       void telemetry();
+      std::set<std::string> dispatch(
+        const std::string &id, const cb::GPUMeasurement &m, double time,
+        double seconds);
     };
   }
 }

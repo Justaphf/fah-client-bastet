@@ -1,0 +1,23 @@
+summary={
+  "seconds": 19,
+  "samples": 5,
+  "gpu_clock": {"min": 1410, "max": 1410, "mean": 1410, "median": 1410, "p95": 1410},
+  "gpu_util": {"min": 99, "max": 99, "mean": 99, "median": 99, "p95": 99},
+  "power": {"min": 40, "max": 40, "mean": 40, "median": 40, "p95": 40},
+  "pstate": {"0": 1},
+  "temp": {"min": 75, "max": 75, "mean": 75, "median": 75, "p95": 75},
+  "energy_joules": 760,
+  "energy_wh": 0.211111
+}
+pstate.sum=1
+checkpoint={
+  "seconds": 19,
+  "samples": 5,
+  "gpu_clock": {"1410": 19},
+  "gpu_util": {"99": 19},
+  "power": {"40": 19},
+  "pstate": {"0": 19},
+  "temp": {"75": 19},
+  "energy_joules": 760
+}
+restored=same

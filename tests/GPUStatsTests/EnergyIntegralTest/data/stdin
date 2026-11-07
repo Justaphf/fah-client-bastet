@@ -1,0 +1,8 @@
+{
+  "samples": [
+    {"weight": 3600, "power": 35},
+    {"weight": 100, "gpu_clock": 1400},
+    {"weight": 1800, "power": 45},
+    {"weight": 0.5, "power": 2}
+  ]
+}

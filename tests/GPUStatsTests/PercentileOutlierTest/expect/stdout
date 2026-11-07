@@ -1,0 +1,16 @@
+summary={
+  "seconds": 20,
+  "samples": 20,
+  "power": {"min": 40, "max": 100, "mean": 46, "median": 40, "p95": 100},
+  "temp": {"min": 70, "max": 90, "mean": 71, "median": 70, "p95": 70},
+  "energy_joules": 920,
+  "energy_wh": 0.255556
+}
+checkpoint={
+  "seconds": 20,
+  "samples": 20,
+  "power": {"40": 18, "100": 2},
+  "temp": {"70": 19, "90": 1},
+  "energy_joules": 920
+}
+restored=same

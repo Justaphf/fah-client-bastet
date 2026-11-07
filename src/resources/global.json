@@ -4,6 +4,8 @@
   "passkey":                    "",
   "cause":                      "any",
   "gpu_telemetry_interval":     1,
+  "gpu_telemetry_history":      false,
   "gpu_telemetry":              {},
+  "energy_rate":                0.17,
   "wu_display_limit":           500
 }

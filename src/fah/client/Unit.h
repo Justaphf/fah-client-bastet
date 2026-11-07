@@ -29,6 +29,7 @@
 #pragma once
 
 #include "UnitState.h"
+#include "GPUStats.h"
 
 #include <cbang/json/Observable.h>
 #include <cbang/event/Event.h>
@@ -93,6 +94,8 @@ namespace FAH {
       unsigned stalls    = 0; // Consecutive stalls without progress
       uint64_t stallDone = 0; // Progress at the last detected stall
 
+      std::map<std::string, GPUStats> gpuStats; // By GPU ID
+
       Unit(App &app);
 
     public:
@@ -129,6 +132,9 @@ namespace FAH {
       std::set<std::string> getGPUs() const;
       bool hasGPU(const std::string &id) const;
       bool hasGPUs() const {return !getGPUs().empty();}
+      void recordGPUSample(const std::string &id, const cb::GPUMeasurement &m,
+                           double seconds);
+      double getGPUEnergyWh(const std::string &id) const;
 
       uint64_t getRunTimeDelta() const;
       uint64_t getRunTime() const;
@@ -160,6 +166,8 @@ namespace FAH {
       double getKnownProgress() const;
       void updateKnownProgress(uint64_t done, uint64_t total);
       bool isStalled() const;
+
+      void updateGPUStats();
 
       void clearProgress() {setProgress(0, 0);}
       void setProgress(double done, double total, bool wu = false);

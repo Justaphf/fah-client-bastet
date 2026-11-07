@@ -1,0 +1,5 @@
+{
+  "samples": [
+    {"weight": 1, "gpu_clock": 1395, "power": 38, "temp": 71, "gpu_util": 97, "pstate": 0}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "samples": [
+    {"weight": 1, "gpu_clock": 1410, "power": 40, "temp": 75, "gpu_util": 99, "pstate": 0},
+    {"weight": 2, "gpu_clock": 1410, "power": 40, "temp": 75, "gpu_util": 99, "pstate": 0},
+    {"weight": 3, "gpu_clock": 1410, "power": 40, "temp": 75, "gpu_util": 99, "pstate": 0},
+    {"weight": 5, "gpu_clock": 1410, "power": 40, "temp": 75, "gpu_util": 99, "pstate": 0},
+    {"weight": 8, "gpu_clock": 1410, "power": 40, "temp": 75, "gpu_util": 99, "pstate": 0}
+  ]
+}
