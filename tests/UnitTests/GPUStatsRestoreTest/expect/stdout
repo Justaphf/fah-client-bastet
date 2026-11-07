@@ -1,0 +1,30 @@
+state=CORE
+id=restore
+wu=7
+group=
+cpus=2
+run_time=3600
+energy_wh.gpu:01:00:00=150
+gpu_stats={
+  "gpu:01:00:00": {
+    "seconds": 3600,
+    "samples": 3600,
+    "gpu_clock": {"min": 1800, "max": 1900, "mean": 1816.666667, "median": 1800, "p95": 1900},
+    "pstate": {"0": 0.9, "2": 0.1},
+    "temp": {"min": 60, "max": 70, "mean": 63.888889, "median": 65, "p95": 70},
+    "energy_joules": 540000,
+    "energy_wh": 150,
+    "run_time": 3600
+  }
+}
+saved={
+  "gpu:01:00:00": {
+    "seconds": 3600,
+    "samples": 3600,
+    "gpu_clock": {"1800": 3000, "1900": 600},
+    "pstate": {"0": 3240, "2": 360},
+    "temp": {"60": 1200, "65": 2000, "70": 400},
+    "energy_joules": 540000
+  }
+}
+reloaded=same

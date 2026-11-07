@@ -1,0 +1,22 @@
+{
+  "state": {
+    "number":   7,
+    "cpus":     2,
+    "gpus":     ["gpu:01:00:00"],
+    "state":    "RUN",
+    "id":       "restore",
+    "group":    "",
+    "run_time": 3600
+  },
+  "data": {},
+  "gpu_stats": {
+    "gpu:01:00:00": {
+      "seconds": 3600,
+      "samples": 3600,
+      "gpu_clock": {"1800": 3000, "1900": 600},
+      "temp": {"60": 1200, "65": 2000, "70": 400},
+      "pstate": {"0": 3240, "2": 360},
+      "energy_joules": 540000
+    }
+  }
+}

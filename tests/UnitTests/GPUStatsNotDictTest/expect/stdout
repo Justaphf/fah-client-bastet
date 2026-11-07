@@ -1,0 +1,10 @@
+state=CORE
+id=notdict
+wu=9
+group=
+cpus=2
+run_time=60
+energy_wh.gpu:01:00:00=0
+gpu_stats=none
+saved=none
+reloaded=same

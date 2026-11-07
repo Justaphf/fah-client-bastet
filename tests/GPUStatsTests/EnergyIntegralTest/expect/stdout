@@ -1,0 +1,16 @@
+summary={
+  "seconds": 5500.5,
+  "samples": 4,
+  "gpu_clock": {"min": 1400, "max": 1400, "mean": 1400, "median": 1400, "p95": 1400},
+  "power": {"min": 2, "max": 45, "mean": 38.329969, "median": 35, "p95": 45},
+  "energy_joules": 207001,
+  "energy_wh": 57.500278
+}
+checkpoint={
+  "seconds": 5500.5,
+  "samples": 4,
+  "gpu_clock": {"1400": 100},
+  "power": {"2": 0.5, "35": 3600, "45": 1800},
+  "energy_joules": 207001
+}
+restored=same

@@ -1,0 +1,7 @@
+{
+  "live": true,
+  "samples": [
+    {"weight": 10, "power": 28.892},
+    {"weight": 10, "power": 28.4}
+  ]
+}

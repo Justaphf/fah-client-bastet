@@ -70,6 +70,7 @@ namespace FAH {
       bool isComputeDeviceEnabled(const std::string &type) const;
       void disableGPU(const std::string &id);
       unsigned getGPUTelemetryInterval() const;
+      bool getGPUTelemetryHistory() const;
       bool isGPUMonitored(const std::string &id) const;
 
       // From JSON::Value

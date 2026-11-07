@@ -1,0 +1,13 @@
+{
+  "state": {
+    "number":   9,
+    "cpus":     2,
+    "gpus":     ["gpu:01:00:00"],
+    "state":    "RUN",
+    "id":       "notdict",
+    "group":    "",
+    "run_time": 60
+  },
+  "data": {},
+  "gpu_stats": {"gpu:01:00:00": 42}
+}

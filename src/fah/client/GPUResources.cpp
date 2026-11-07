@@ -39,9 +39,12 @@
 #include <cbang/os/SystemUtilities.h>
 #include <cbang/json/Reader.h>
 #include <cbang/time/Time.h>
+#include <cbang/time/Timer.h>
 #include <cbang/log/Logger.h>
 #include <cbang/hw/GPUInfo.h>
 #include <cbang/util/WeakCallback.h>
+
+#include <algorithm>
 
 using namespace FAH::Client;
 using namespace cb;
@@ -50,6 +53,25 @@ using namespace std;
 
 namespace {
   const unsigned updateFreq = Time::SEC_PER_DAY * 5;
+
+
+  // Feeds the trend statistics of the units running on the device
+  class UnitStatsSink : public GPUSampleSink {
+    App &app;
+
+  public:
+    UnitStatsSink(App &app) : app(app) {}
+
+    void sample(const GPUSample &s) override {
+      if (!app.getConfig()->getGPUTelemetryHistory()) return;
+
+      for (auto &id: s.units) {
+        auto unit = app.getUnits()->findUnit(id);
+        if (unit.isSet())
+          unit->recordGPUSample(s.device, s.measurement, s.weightSeconds);
+      }
+    }
+  };
 }
 
 
@@ -58,6 +80,7 @@ GPUResources::GPUResources(App &app) :
   updateEvent(app.getEventBase().newEvent([this] {update();}, 0)),
   detectEvent(app.getEventBase().newEvent([this] {detect();}, 0)),
   telemetryEvent(app.getEventBase().newEvent([this] {telemetry();}, 0)) {
+  sinks.push_back(new UnitStatsSink(app));
   updateEvent->activate();
 }
 
@@ -171,6 +194,11 @@ void GPUResources::telemetry() {
   unsigned interval = config.getGPUTelemetryInterval();
   telemetryEvent->add(interval);
 
+  // This sample was scheduled with the previous interval
+  unsigned expected = telemetryInterval ? telemetryInterval : interval;
+  telemetryInterval = interval;
+  double now = Timer::now();
+
   for (auto &v: *this) {
     auto &res = *v.cast<GPUResource>();
     auto &id  = res.getID();
@@ -180,6 +208,21 @@ void GPUResources::telemetry() {
       auto d = res.readTelemetry(m);
 
       if (d.isSet()) {
+        double &last = lastSample[id];
+        auto units = dispatch(id, m, now, getSampleWeight(last, now, expected));
+        last = now;
+
+        // Energy of the running unit so far, from the same statistics it saves
+        if (config.getGPUTelemetryHistory() && !units.empty()) {
+          double energy = 0;
+          for (auto &unitID: units) {
+            auto unit = app.getUnits()->findUnit(unitID);
+            if (unit.isSet())
+              energy = std::max(energy, unit->getGPUEnergyWh(id));
+          }
+          d->insert("energy_wh", energy);
+        }
+
         res.insert("telemetry", d); // No change notification if equal
         continue;
       }
@@ -187,5 +230,37 @@ void GPUResources::telemetry() {
 
     // Never leave a stale reading behind
     if (res.has("telemetry")) res.clearTelemetry();
+    lastSample.erase(id); // Time without readings is not credited
   }
+}
+
+
+double GPUResources::getSampleWeight(double last, double now,
+                                     unsigned interval) {
+  // A late sample stands for the time since the previous one, but a stall
+  // or a sleep is not credited to the units
+  if (!last) return interval;
+  return std::min(std::max(0.0, now - last), 2.0 * interval);
+}
+
+
+std::set<string> GPUResources::dispatch(
+  const string &id, const GPUMeasurement &m, double time, double seconds) {
+  GPUSample s;
+  s.time          = time;
+  s.device        = id;
+  s.measurement   = m;
+  s.weightSeconds = seconds;
+
+  // Only time a unit actually runs on the device counts, so pauses and
+  // restarts leave no trace in its statistics
+  for (auto &v: *app.getUnits()) {
+    auto &unit = *v.cast<Unit>();
+    if (unit.isRunning() && !unit.isPaused() && unit.hasGPU(id))
+      s.units.insert(unit.getID());
+  }
+
+  for (auto &sink: sinks) sink->sample(s);
+
+  return s.units;
 }

@@ -1,0 +1,12 @@
+{
+  "live": true,
+  "samples": [
+    {"weight": 1, "gpu_clock": 1400},
+    {"weight": 1, "power": 36},
+    {"weight": 2, "power": 72},
+    {"weight": 0, "power": 300},
+    {"weight": 1, "gpu_clock": 1400},
+    {"weight": 1800, "power": 50},
+    {"weight": 0.5, "power": 2}
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "samples": [
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 40},
+    {"weight": 1, "temp": 70, "power": 100},
+    {"weight": 1, "temp": 90, "power": 100}
+  ]
+}

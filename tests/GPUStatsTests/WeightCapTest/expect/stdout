@@ -1,0 +1,15 @@
+weights=1 1.125 0.75 1 2 0 1
+summary={
+  "seconds": 6.875,
+  "samples": 6,
+  "power": {"min": 10, "max": 40, "mean": 31.272727, "median": 40, "p95": 40},
+  "energy_joules": 215,
+  "energy_wh": 0.059722
+}
+checkpoint={
+  "seconds": 6.875,
+  "samples": 6,
+  "power": {"10": 2, "40": 4.875},
+  "energy_joules": 215
+}
+restored=same

@@ -1,0 +1,18 @@
+summary={
+  "seconds": 1805.5,
+  "samples": 6,
+  "gpu_clock": {"min": 1400, "max": 1400, "mean": 1400, "median": 1400, "p95": 1400},
+  "power": {"min": 2, "max": 72, "mean": 50.003327, "median": 50, "p95": 50},
+  "energy_joules": 90181,
+  "energy_wh": 25.050278
+}
+live=0 0.01 0.05 0.05 0.05 25.05 25.050278
+live.saved=same
+checkpoint={
+  "seconds": 1805.5,
+  "samples": 6,
+  "gpu_clock": {"1400": 2},
+  "power": {"2": 0.5, "36": 1, "50": 1800, "72": 2},
+  "energy_joules": 90181
+}
+restored=same

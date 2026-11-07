@@ -1,0 +1,26 @@
+{
+  "state": {
+    "number":   8,
+    "cpus":     2,
+    "gpus":     ["gpu:01:00:00", "gpu:02:00:00"],
+    "state":    "RUN",
+    "id":       "badkey",
+    "group":    "",
+    "run_time": 60
+  },
+  "data": {},
+  "gpu_stats": {
+    "gpu:01:00:00": {
+      "seconds": 60,
+      "samples": 60,
+      "temp": {"60": 60},
+      "energy_joules": 7200
+    },
+    "gpu:02:00:00": {
+      "seconds": 60,
+      "samples": 60,
+      "temp": {"hot": 60},
+      "energy_joules": 7200
+    }
+  }
+}
