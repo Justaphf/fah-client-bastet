@@ -1,0 +1,5 @@
+Import('*')
+
+gpuSeries = env.Program('gpuSeries', 'gpuSeries.cpp')
+
+Return('gpuSeries')

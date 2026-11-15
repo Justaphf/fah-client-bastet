@@ -1,0 +1,8 @@
+[
+  {"config": {"gpu_telemetry_history": false}},
+  {"now": 1767270000},
+  {"range": "gpu:01:00:00", "from": 1767268800, "to": 1767270000},
+  {"tables": true},
+  {"series": "U1"},
+  {"tables": true}
+]

@@ -1,0 +1,5 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40.6, "pstate": 0}, "repeat": 3, "step": 60},
+  {"sample": {"time": 1767269040, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 10.2, "pstate": 0}, "repeat": 1, "step": 60},
+  {"range": "gpu:01:00:00", "from": 1767268800, "to": 1767269040}
+]

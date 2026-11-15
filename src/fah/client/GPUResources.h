@@ -30,6 +30,7 @@
 
 #include "GPUResource.h"
 #include "GPUSampleSink.h"
+#include "GPUHistory.h"
 
 #include <cbang/hw/GPUIndex.h>
 #include <cbang/event/Event.h>
@@ -62,12 +63,14 @@ namespace FAH {
       cb::HTTP::Client::RequestPtr pr;
 
       std::vector<cb::SmartPointer<GPUSampleSink>> sinks;
+      cb::SmartPointer<GPUHistory> history;
 
     public:
       GPUResources(App &app);
       ~GPUResources();
 
       bool isDetected() const {return detected;}
+      GPUHistory &getHistory() {return *history;}
 
       static double getSampleWeight(double last, double now,
                                     unsigned interval);

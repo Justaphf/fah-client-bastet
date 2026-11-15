@@ -1,0 +1,5 @@
+crash
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767268980,"result":"credited"}
+range gpu:01:00:00={"from":1767225600,"to":1767270000,"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,1400],[40,40,40],0],[1767268860,60,[1400,1400,1400],[40,40,40],0],[1767268920,60,[1400,1400,1400],[40,40,40],0]],"units":[{"id":"U1","start":1767268800,"end":1767268980,"result":"credited","runs":[[1767268800,1767268980]]}],"stats":{"all":{"seconds":180,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":7200,"energy_wh":2},"active":{"seconds":180,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":7200,"energy_wh":2}}}
+series U1={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,1400],[40,40,40],0],[1767268860,60,[1400,1400,1400],[40,40,40],0],[1767268920,60,[1400,1400,1400],[40,40,40],0]]}}

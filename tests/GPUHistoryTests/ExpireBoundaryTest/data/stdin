@@ -1,0 +1,12 @@
+[
+  {"config": {"gpu_telemetry_history_days": 1}},
+  {"sample": {"time": 1767311940, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"end": "U1", "result": "credited"},
+  {"sample": {"time": 1767355200, "weight": 60, "units": ["U2"], "gpu_clock": 1100, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"dump": "gpu_history_units"},
+  {"now": 1767398460},
+  {"prune": true},
+  {"dump": "gpu_history_units"},
+  {"range": "gpu:01:00:00", "from": 1767312000, "to": 1767398460, "brief": true}
+]

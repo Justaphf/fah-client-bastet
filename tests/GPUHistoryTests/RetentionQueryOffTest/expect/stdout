@@ -1,0 +1,23 @@
+crash
+dump
+gpu_history gpu:01:00:00/20260101={"U0":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268860,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268920,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}]]}}
+gpu_history gpu:01:00:00/20260104={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767528000,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}],[1767528060,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}],[1767528120,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}]]}}
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["U0"]}
+gpu_history_days gpu:01:00:00/20260104={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_rollup gpu:01:00:00/20260101={"U0":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,180,[1400,1400,252000,180],[40,40,7200,180],{"0":180}]]}}
+gpu_history_rollup gpu:01:00:00/20260104={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767528000,180,[1100,1100,198000,180],[40,40,7200,180],{"0":180}]]}}
+gpu_history_units U0={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269800,"result":"credited"}
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767528000,"last":1767528180,"finish":null,"result":null}
+range gpu:01:00:00 bucket=60 rows=3 units=1
+series U1 gpu:01:00:00 bucket=60 rows=3
+dump
+gpu_history gpu:01:00:00/20260101={"U0":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268860,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268920,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}]]}}
+gpu_history gpu:01:00:00/20260104={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767528000,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}],[1767528060,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}],[1767528120,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}]]}}
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["U0"]}
+gpu_history_days gpu:01:00:00/20260104={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_rollup gpu:01:00:00/20260101={"U0":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,180,[1400,1400,252000,180],[40,40,7200,180],{"0":180}]]}}
+gpu_history_rollup gpu:01:00:00/20260104={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767528000,180,[1100,1100,198000,180],[40,40,7200,180],{"0":180}]]}}
+gpu_history_units U0={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269800,"result":"credited"}
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767528000,"last":1767528180,"finish":1767529800,"result":"credited","number":8,"group":"gpu"}

@@ -1,0 +1,22 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history_units BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"sample": {"time": 1767269100, "weight": 60, "units": ["U2"], "gpu_clock": 1100, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"crash": true},
+  {"sql": "DROP TRIGGER fail"},
+  {"dump": true},
+  {"series": "U2", "compare": false},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"sample": {"time": 1767269400, "weight": 60, "units": ["U3"], "gpu_clock": 1000, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"crash": true},
+  {"sql": "DROP TRIGGER fail"},
+  {"dump": "gpu_history"},
+  {"dump": "gpu_history_units"},
+  {"series": "U3", "compare": false},
+  {"sample": {"time": 1767269700, "weight": 60, "units": ["U3"], "gpu_clock": 1000, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"series": "U3", "compare": false}
+]

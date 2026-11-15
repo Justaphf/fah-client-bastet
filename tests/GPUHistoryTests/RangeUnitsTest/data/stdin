@@ -1,0 +1,21 @@
+[
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"unit": {"id": "U2", "number": 2, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"unit": {"id": "U3", "number": 3, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"unit": {"id": "U4", "number": 4, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"unit": {"id": "U6", "number": 6, "group": "gpu", "state": "RUN", "gpus": ["gpu:02:00:00"]}},
+  {"sample": {"time": 1767229260, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"now": 1767229400},
+  {"end": "U1", "result": "credited"},
+  {"sample": {"time": 1767229620, "weight": 60, "units": ["U3"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"sample": {"time": 1767232920, "weight": 60, "units": ["U2"], "gpu_clock": 1300, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"now": 1767233100},
+  {"end": "U2", "result": "failed"},
+  {"sample": {"time": 1767233640, "weight": 60, "units": ["U5"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"sample": {"time": 1767233700, "weight": 60, "gpu": "gpu:02:00:00", "units": ["U6"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"sample": {"time": 1767237600, "weight": 60, "units": ["U4"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"now": 1767245600},
+  {"range": "gpu:01:00:00", "from": 1767232800, "to": 1767236400},
+  {"range": "gpu:02:00:00", "from": 1767232800, "to": 1767236400},
+  {"range": "gpu:01:00:00", "from": 1767228600, "to": 1767229300}
+]

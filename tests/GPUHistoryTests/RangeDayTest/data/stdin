@@ -1,0 +1,12 @@
+[
+  {"config": {"gpu_telemetry_continuous": true}},
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"sample": {"time": 1767229260, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"sample": {"time": 1767229440, "weight": 60, "gpu_clock": 300, "power": 10, "pstate": 8}, "repeat": 2, "step": 60},
+  {"sample": {"time": 1767229560, "weight": 60, "units": ["U1"], "gpu_clock": 1300, "power": 50, "pstate": 0}},
+  {"sample": {"time": 1767229620, "weight": 60, "units": ["U1", "U2"], "gpu_clock": 1500, "power": 60, "pstate": 0}},
+  {"now": 1767232800},
+  {"range": "gpu:01:00:00", "from": 1767229200, "to": 1767232800},
+  {"range": "gpu:01:00:00", "from": 1767229290, "to": 1767229400},
+  {"range": "gpu:01:00:00", "from": 1767229200, "to": 1767329200}
+]

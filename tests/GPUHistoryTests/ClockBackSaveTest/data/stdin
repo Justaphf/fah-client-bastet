@@ -1,0 +1,13 @@
+[
+  {"sample": {"time": 1767268801, "weight": 1, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 400, "step": 1},
+  {"flush": true},
+  {"sample": {"time": 1767265201, "weight": 1, "units": ["U1"], "gpu_clock": 1100, "power": 40, "pstate": 0}, "repeat": 120, "step": 1},
+  {"save": true},
+  {"dump": "gpu_history"},
+  {"sample": {"time": 1767269300, "weight": 1, "units": ["U1"], "gpu_clock": 1000, "power": 40, "pstate": 0}},
+  {"now": 1767261600},
+  {"save": true},
+  {"now": 1767261660},
+  {"save": true},
+  {"dump": "gpu_history"}
+]

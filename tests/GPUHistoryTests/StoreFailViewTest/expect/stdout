@@ -1,0 +1,6 @@
+range gpu:01:00:00 bucket=60 rows=6 units=1
+range gpu:01:00:00 bucket=120 rows=3 units=1
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":120,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260102={"bucket":60,"rollup":true,"tags":["U1"]}

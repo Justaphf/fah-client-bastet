@@ -1,0 +1,14 @@
+[
+  {"sample": {"time": 1767229260, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 60, "step": 60},
+  {"flush": true},
+  {"sample": {"time": 1767315660, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 60, "step": 60},
+  {"flush": true},
+  {"sample": {"time": 1767402060, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 60, "step": 60},
+  {"flush": true},
+  {"config": {"gpu_telemetry_aging": [{"days": 1, "bucket": 2000}]}},
+  {"now": 1767488400},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"range": "gpu:01:00:00", "from": 1766880000, "to": 1767488400, "brief": true},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767398400, "points": 10, "brief": true}
+]

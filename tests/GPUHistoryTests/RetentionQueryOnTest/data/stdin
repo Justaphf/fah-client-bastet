@@ -1,0 +1,17 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U0"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"now": 1767269800},
+  {"end": "U0", "result": "credited"},
+  {"sample": {"time": 1767528060, "weight": 60, "units": ["U1"], "gpu_clock": 1100, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"flush": true},
+  {"crash": true},
+  {"config": {"gpu_telemetry_history_days": 2}},
+  {"set": ["wu_log", "U1", "{\"id\":\"U1\",\"number\":8,\"group\":\"gpu\",\"end_time\":\"2026-01-04T12:30:00Z\",\"result\":\"credited\"}"]},
+  {"now": 1767531600},
+  {"dump": true},
+  {"range": "gpu:01:00:00", "from": 1767484800, "to": 1767531600, "brief": true},
+  {"series": "U1", "brief": true, "compare": false},
+  {"dump": true},
+  {"sample": {"time": 1767531600, "weight": 60, "units": ["U2"], "gpu_clock": 1100, "power": 40, "pstate": 0}},
+  {"dump": true}
+]

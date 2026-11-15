@@ -1,0 +1,22 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history_units BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"sample": {"time": 1767268980, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"now": 1767269000},
+  {"flush": true},
+  {"sql": "DROP TRIGGER fail"},
+  {"now": 1767269100},
+  {"flush": true},
+  {"dump": "gpu_history_units"},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"sample": {"time": 1767269160, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"now": 1767269200},
+  {"end": "U1", "result": "credited"},
+  {"sql": "DROP TRIGGER fail"},
+  {"now": 1767269300},
+  {"flush": true},
+  {"crash": true},
+  {"dump": "gpu_history"},
+  {"dump": "gpu_history_units"}
+]

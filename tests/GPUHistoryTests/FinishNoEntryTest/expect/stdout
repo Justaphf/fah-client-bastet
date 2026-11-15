@@ -1,0 +1,3 @@
+tables
+tables gpu_history gpu_history_days gpu_history_rollup gpu_history_units
+dump

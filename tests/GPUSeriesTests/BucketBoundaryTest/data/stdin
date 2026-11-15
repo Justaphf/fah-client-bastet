@@ -1,0 +1,11 @@
+{
+  "bucket": 60,
+  "samples": [
+    {"time": 1799999999, "weight": 1, "gpu_clock": 900},
+    {"time": 1800000000, "weight": 1, "gpu_clock": 950},
+    {"time": 1800000059, "weight": 1, "gpu_clock": 1000},
+    {"time": 1800000060, "weight": 1, "gpu_clock": 1100},
+    {"time": 1800000119, "weight": 1, "gpu_clock": 1200},
+    {"time": 1800000120, "weight": 1, "gpu_clock": 1300}
+  ]
+}

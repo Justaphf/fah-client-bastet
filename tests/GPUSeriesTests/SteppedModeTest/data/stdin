@@ -1,0 +1,11 @@
+{
+  "bucket": 60,
+  "samples": [
+    {"time": 1800000010, "weight": 1, "gpu_clock": 1395, "pstate": 0, "pcie_gen": 3, "pcie_width": 16},
+    {"time": 1800000011, "weight": 1, "gpu_clock": 1395, "pstate": 0, "pcie_gen": 3, "pcie_width": 16},
+    {"time": 1800000012, "weight": 1, "gpu_clock": 1395, "pstate": 0, "pcie_gen": 1, "pcie_width": 16},
+    {"time": 1800000013, "weight": 5, "gpu_clock": 1395, "pstate": 8, "pcie_gen": 1, "pcie_width": 8},
+    {"time": 1800000070, "weight": 2, "gpu_clock": 1395, "pstate": 2, "pcie_gen": 4, "pcie_width": 16},
+    {"time": 1800000072, "weight": 2, "gpu_clock": 1395, "pstate": 0, "pcie_gen": 3, "pcie_width": 16}
+  ]
+}

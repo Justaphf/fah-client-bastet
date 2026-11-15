@@ -1,0 +1,3 @@
+restart
+series U1 gpu:01:00:00 bucket=20 rows=1110
+per-unit U1=same

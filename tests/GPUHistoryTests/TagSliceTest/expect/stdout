@@ -1,0 +1,13 @@
+dump
+gpu_history gpu:01:00:00/20260101={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,3,[1400,1400,4200,3],[38,38,114,3],{"0":3}]]},"U2":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268920,3,[1300,1300,3900,3],[36,36,108,3],{"0":3}]]}}
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["U1","U2"]}
+gpu_history_rollup gpu:01:00:00/20260101={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,3,[1400,1400,4200,3],[38,38,114,3],{"0":3}]]},"U2":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,3,[1300,1300,3900,3],[36,36,108,3],{"0":3}]]}}
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268809,"last":1767268812,"finish":null,"result":null}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767268929,"last":1767268932,"finish":null,"result":null}
+series U1={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,3,[1400,1400,1400],[38,38,38],0]]}}
+per-unit U1=same
+series U2={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268920,3,[1300,1300,1300],[36,36,36],0]]}}
+per-unit U2=same
+series U3=null
+per-unit U3=same

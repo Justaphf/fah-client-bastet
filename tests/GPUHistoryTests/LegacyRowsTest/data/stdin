@@ -1,0 +1,8 @@
+[
+  {"set": ["gpu_history", "gpu:01:00:00/20260101", "{\"U1\":{\"bucket\":60,\"fields\":[\"gpu_clock\"],\"states\":[],\"rows\":[[1767268800,60,[1000,1000,60000,60]]]}}"]},
+  {"set": ["gpu_history_units", "U1", "{\"gpus\":[\"gpu:01:00:00\"],\"first\":1767268740,\"last\":1767268860,\"finish\":null,\"result\":null}"]},
+  {"series": "U1", "compare": false},
+  {"dump": "gpu_history_days"},
+  {"sample": {"time": 1767312060, "weight": 1, "units": ["U2"], "gpu_clock": 1400, "power": 38, "pstate": 0}},
+  {"dump": true}
+]

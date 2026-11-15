@@ -1,0 +1,17 @@
+dump
+gpu_history gpu:01:00:00/20260101={"UA":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268860,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}]]}}
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["UA"]}
+gpu_history_rollup gpu:01:00:00/20260101={"UA":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,120,[1400,1400,168000,120],[40,40,4800,120],{"0":120}]]}}
+gpu_history_units UA={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268920,"finish":null,"result":null,"number":1,"group":"gpu"}
+restart
+range gpu:01:00:00 bucket=1800 rows=2 units=2
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["UA","UB"]}
+dump
+gpu_history_rollup gpu:01:00:00/20260101={"UA":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,120,[1400,1400,168000,120],[40,40,4800,120],{"0":120}]]},"UB":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767267000,120,[1100,1100,132000,120],[40,40,4800,120],{"0":120}]]}}
+series UB={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268200,60,[1100,1100,1100],[40,40,40],0],[1767268260,60,[1100,1100,1100],[40,40,40],0]]}}
+series UA={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,1400],[40,40,40],0],[1767268860,60,[1400,1400,1400],[40,40,40],0]]}}
+per-unit UA=same
+range gpu:01:00:00={"from":1767265200,"to":1767272400,"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268200,60,[1100,1100,1100],[40,40,40],0],[1767268260,60,[1100,1100,1100],[40,40,40],0],[1767268800,60,[1400,1400,1400],[40,40,40],0],[1767268860,60,[1400,1400,1400],[40,40,40],0]],"units":[{"id":"UB","start":1767268200,"end":1767268330,"result":"credited","runs":[[1767268200,1767268320]]},{"id":"UA","start":1767268800,"end":null,"result":null,"runs":[[1767268800,1767268920]],"number":1,"group":"gpu"}],"stats":{"all":{"seconds":240,"gpu_clock":{"min":1100,"max":1400,"mean":1250,"median":1100,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":9600,"energy_wh":2.666667},"active":{"seconds":240,"gpu_clock":{"min":1100,"max":1400,"mean":1250,"median":1100,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":9600,"energy_wh":2.666667}}}

@@ -1,0 +1,5 @@
+restart
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268809,"last":1767268812,"finish":1767268900,"result":"dumped","number":7,"group":"late"}
+series U1={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,3,[1400,1400,1400],[38,38,38],0]]}}
+per-unit U1=same

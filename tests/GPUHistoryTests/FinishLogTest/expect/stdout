@@ -1,0 +1,13 @@
+restart
+crash
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269800,"result":"credited","number":7,"group":"gpu","project":18201,"run":1,"clone":2,"gen":3}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767269340,"last":1767269460,"finish":null,"result":null}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269800,"result":"credited","number":7,"group":"gpu","project":18201,"run":1,"clone":2,"gen":3}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767269340,"last":1767269460,"finish":null,"result":null}
+range gpu:01:00:00={"from":1767268800,"to":1767270000,"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,1400],[40,40,40],0],[1767268860,60,[1400,1400,1400],[40,40,40],0],[1767268920,60,[1400,1400,1400],[40,40,40],0],[1767269340,60,[1100,1100,1100],[40,40,40],0],[1767269400,60,[1100,1100,1100],[40,40,40],0]],"units":[{"id":"U1","start":1767268800,"end":1767269800,"result":"credited","runs":[[1767268800,1767268980]],"number":7,"group":"gpu","project":18201,"run":1,"clone":2,"gen":3},{"id":"U2","start":1767269340,"end":1767269460,"result":null,"runs":[[1767269340,1767269460]]}],"stats":{"all":{"seconds":300,"gpu_clock":{"min":1100,"max":1400,"mean":1280,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":12000,"energy_wh":3.333333},"active":{"seconds":300,"gpu_clock":{"min":1100,"max":1400,"mean":1280,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":12000,"energy_wh":3.333333}}}
+restart
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269800,"result":"credited","number":7,"group":"gpu","project":18201,"run":1,"clone":2,"gen":3}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767269340,"last":1767269460,"finish":1767269820,"result":"dumped"}

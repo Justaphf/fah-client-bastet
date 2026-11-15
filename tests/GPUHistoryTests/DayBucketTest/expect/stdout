@@ -1,0 +1,5 @@
+dump
+gpu_history gpu:01:00:00/20260101={"U1":{"bucket":72,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767311928,2,[1400,1400,2800,2],[38,38,76,2],{"0":2}]]}}
+gpu_history gpu:01:00:00/20260102={"U1":{"bucket":72,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767312000,1,[1400,1400,1400,1],[38,38,38,1],{"0":1}]]}}
+series U1={"gpu:01:00:00":{"bucket":72,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767311928,2,[1400,1400,1400],[38,38,38],0],[1767312000,1,[1400,1400,1400],[38,38,38],0]]}}
+per-unit U1=same

@@ -1,0 +1,12 @@
+[
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"sample": {"time": 1767311880, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"sample": {"time": 1767312060, "weight": 60, "units": ["U1"], "gpu_clock": 1200, "power": 30, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"config": {"gpu_telemetry_aging": [{"days": 1, "bucket": 120}]}},
+  {"now": 1767399000},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"range": "gpu:01:00:00", "from": 1767311400, "to": 1767312600},
+  {"range": "gpu:01:00:00", "from": 1767139200, "to": 1767312600}
+]

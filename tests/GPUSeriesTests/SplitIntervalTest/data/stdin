@@ -1,0 +1,9 @@
+{
+  "bucket": 10,
+  "reload": [2],
+  "samples": [
+    {"time": 1800000025, "weight": 30, "gpu_clock": 1000, "power": 30, "pstate": 0},
+    {"time": 1800000055, "weight": 30, "gpu_clock": 1200, "power": 40, "pstate": 2},
+    {"time": 1800000085, "weight": 30, "gpu_clock": 1100, "power": 50, "pstate": 2}
+  ]
+}

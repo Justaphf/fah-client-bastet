@@ -1,0 +1,10 @@
+range gpu:09:00:00=null
+range =null
+range gpu:01:00:00=null
+range gpu:01:00:00=null
+range gpu:01:00:00=null
+range gpu:01:00:00=null
+range gpu:01:00:00=null
+range gpu:01:00:00=null
+range gpu:01:00:00={"from":1767227400,"to":1767229200,"bucket":60,"fields":[],"states":[],"rows":[],"units":[],"stats":{"all":{"seconds":0},"active":{"seconds":0}}}
+range gpu:01:00:00={"from":1735606800,"to":1767229200,"bucket":21600,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767225600,60,[1400,1400,1400],[40,40,40],0]],"units":[{"id":"U1","start":1767225600,"end":1767225660,"result":null,"runs":[[1767225600,1767225660]]}],"stats":{"all":{"seconds":60,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":2400,"energy_wh":0.666667},"active":{"seconds":60,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":2400,"energy_wh":0.666667}}}

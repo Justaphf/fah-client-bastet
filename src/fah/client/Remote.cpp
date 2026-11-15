@@ -35,10 +35,13 @@
 #include "Unit.h"
 #include "Config.h"
 #include "Group.h"
+#include "GPUResources.h"
 
 #include <cbang/Catch.h>
 #include <cbang/log/Logger.h>
 #include <cbang/os/SystemUtilities.h>
+
+#include <cmath>
 
 using namespace FAH::Client;
 using namespace cb;
@@ -166,6 +169,32 @@ void Remote::onMessage(const JSON::ValuePtr &msg) {
   } else if (cmd == "wus") {
     sendWUsEnabled = msg->getBoolean("enable", false);
     sendWUs();
+
+  } else if (cmd == "series") {
+    string id = msg->getString("unit", "");
+
+    JSON::ValuePtr changes = new JSON::List;
+    changes->append("series");
+    changes->append(id);
+    changes->append(app.getGPUs().getHistory().get(id));
+    sendChanges(changes);
+
+  } else if (cmd == "gpu_history") {
+    string gpu = msg->getString("gpu", "");
+
+    JSON::ValuePtr changes = new JSON::List;
+    changes->append("gpu_history");
+    changes->append(gpu);
+    changes->append(app.getGPUs().getHistory().get(
+      gpu, msg->getNumber("from", NAN), msg->getNumber("to", NAN),
+      msg->getNumber("points", 0)));
+
+    // Echoed, so a reply can be matched to its request.  Only integers
+    // and strings come back unchanged.
+    auto id = msg->get("id", JSON::Null::instancePtr());
+    if (id->isInteger() || id->isString()) changes->append(id);
+
+    sendChanges(changes);
 
   } else {
     LOG_WARNING("Received unsupported remote command '" << cmd << "'");

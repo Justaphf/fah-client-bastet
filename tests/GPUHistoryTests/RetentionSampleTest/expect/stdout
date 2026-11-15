@@ -1,0 +1,3 @@
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260105={"bucket":60,"rollup":true,"tags":["U1"]}

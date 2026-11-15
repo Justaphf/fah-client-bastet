@@ -1,0 +1,23 @@
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269100,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767272400,"last":1767272580,"finish":1767272700,"result":"credited"}
+gpu_history_units U9={"gpus":["gpu:01:00:00"],"first":1767052800,"last":1767052860,"finish":1767052900,"result":"credited"}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269100,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767272400,"last":1767272580,"finish":1767272700,"result":"credited"}
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767311880,"last":1767311940,"finish":1767312030,"result":"credited"}
+restart
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269100,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767272400,"last":1767272580,"finish":1767272700,"result":"credited"}
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767311880,"last":1767311940,"finish":1767312030,"result":"credited"}
+range gpu:01:00:00 bucket=60 rows=1 units=3
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269100,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767272400,"last":1767272580,"finish":1767272700,"result":"credited"}
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767311880,"last":1767311940,"finish":1767312030,"result":"credited"}
+gpu_history_units U8={"gpus":["gpu:01:00:00"],"first":1767314400,"last":1767314460,"finish":null,"result":null}
+dump
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767311880,"last":1767311940,"finish":1767312030,"result":"credited"}
+gpu_history_units U4={"gpus":["gpu:01:00:00"],"first":1767315600,"last":1767315660,"finish":null,"result":null}
+gpu_history_units U8={"gpus":["gpu:01:00:00"],"first":1767314400,"last":1767314460,"finish":1767315120,"result":"credited"}

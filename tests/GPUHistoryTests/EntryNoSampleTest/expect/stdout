@@ -1,0 +1,5 @@
+restart
+dump
+gpu_history_units U0={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268860,"finish":1767268860,"result":"credited"}
+series U1=null
+range gpu:01:00:00={"from":1767225600,"to":1767269500,"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,1400],[40,40,40],0]],"units":[{"id":"U0","start":1767268800,"end":1767268860,"result":"credited","runs":[[1767268800,1767268860]]}],"stats":{"all":{"seconds":60,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":2400,"energy_wh":0.666667},"active":{"seconds":60,"gpu_clock":{"min":1400,"max":1400,"mean":1400,"median":1400,"p95":1400},"power":{"min":40,"max":40,"mean":40,"median":40,"p95":40},"pstate":{"0":1},"energy_joules":2400,"energy_wh":0.666667}}}

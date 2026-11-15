@@ -1,0 +1,17 @@
+[
+  {"config": {"gpu_telemetry_history_days": 1}},
+  {"sample": {"time": 1767312000.25, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"restart": true},
+  {"sql": "ALTER TABLE gpu_history_units RENAME TO gpu_history_units_away"},
+  {"sql": "CREATE VIEW gpu_history_units AS SELECT name, value FROM nothing"},
+  {"now": 1767312000},
+  {"end": "U1", "result": "credited"},
+  {"now": 1767398460},
+  {"prune": true},
+  {"sql": "DROP VIEW gpu_history_units"},
+  {"sql": "ALTER TABLE gpu_history_units_away RENAME TO gpu_history_units"},
+  {"flush": true},
+  {"dump": "gpu_history_units"},
+  {"series": "U1", "compare": false}
+]

@@ -1,0 +1,7 @@
+restart
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={}
+days gpu:01:00:00 20260101 'U1'=1800/1 'U2'=1800/1
+dump
+gpu_history_rollup gpu:01:00:00/20260101={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,120,[1400,1400,168000,120],[40,40,4800,120],{"0":120}]]},"U2":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}]]}}

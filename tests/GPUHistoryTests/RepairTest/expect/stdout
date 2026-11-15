@@ -1,0 +1,29 @@
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={}
+gpu_history_days gpu:01:00:00/20260102={}
+gpu_history_days gpu:01:00:00/20260103={}
+gpu_history_days gpu:01:00:00/20260104={}
+gpu_history_days gpu:01:00:00/20260105={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260106={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260107={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260108={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260109={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260110={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260111={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260112={"bucket":60,"rollup":true,"tags":["U1"]}
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={}
+gpu_history_days gpu:01:00:00/20260102={}
+gpu_history_days gpu:01:00:00/20260103={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260104={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260105={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260106={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260107={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260108={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260109={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260110={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260111={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260112={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260113={"bucket":60,"rollup":true,"tags":["U2"]}

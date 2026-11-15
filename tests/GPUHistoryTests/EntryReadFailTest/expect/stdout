@@ -1,0 +1,9 @@
+restart
+crash
+dump
+gpu_history gpu:01:00:00/20260101={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}],[1767268860,60,[1400,1400,84000,60],[40,40,2400,60],{"0":60}]]},"U2":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767269280,60,[1100,1100,66000,60],[40,40,2400,60],{"0":60}]]}}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268920,"finish":null,"result":null}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767269280,"last":1767269340,"finish":null,"result":null}
+series U2={"gpu:01:00:00":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767269280,60,[1100,1100,1100],[40,40,40],0]]}}
+series U3=null

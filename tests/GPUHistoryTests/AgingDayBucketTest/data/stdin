@@ -1,0 +1,11 @@
+[
+  {"config": {"gpu_telemetry_bucket": 45}},
+  {"sample": {"time": 1767268845, "weight": 45, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 30, "step": 45},
+  {"flush": true},
+  {"restart": true},
+  {"config": {"gpu_telemetry_aging": [{"days": 1, "bucket": 600}]}},
+  {"now": 1767402000},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"series": "U1", "compare": false, "brief": true}
+]

@@ -31,6 +31,8 @@
 #include <cbang/json/Observable.h>
 #include <cbang/config/Options.h>
 
+#include <map>
+
 
 namespace FAH {
   namespace Client {
@@ -39,6 +41,7 @@ namespace FAH {
     class Config : public cb::JSON::ObservableDict {
       App &app;
       cb::JSON::ValuePtr defaults;
+      mutable std::string agingWarned;
 
       typedef cb::JSON::ObservableDict Super_T;
 
@@ -71,6 +74,10 @@ namespace FAH {
       void disableGPU(const std::string &id);
       unsigned getGPUTelemetryInterval() const;
       bool getGPUTelemetryHistory() const;
+      unsigned getGPUTelemetryBucket() const;
+      bool getGPUTelemetryContinuous() const;
+      unsigned getGPUTelemetryHistoryDays() const;
+      std::map<unsigned, unsigned> getGPUTelemetryAging() const;
       bool isGPUMonitored(const std::string &id) const;
       unsigned getWUDisplayLimit() const;
 

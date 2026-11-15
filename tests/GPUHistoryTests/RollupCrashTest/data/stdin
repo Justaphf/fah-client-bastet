@@ -1,0 +1,14 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history_rollup BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"sample": {"time": 1767269100, "weight": 60, "units": ["U2"], "gpu_clock": 1100, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"restart": true},
+  {"sql": "DROP TRIGGER fail"},
+  {"dump": "gpu_history_days"},
+  {"now": 1767315600},
+  {"prune": true},
+  {"days": "gpu:01:00:00", "from": 1767225600, "to": 1767225600, "rollup": true},
+  {"dump": "gpu_history_rollup"}
+]

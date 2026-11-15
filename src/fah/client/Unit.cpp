@@ -461,6 +461,7 @@ void Unit::save() {
   writer.flush();
 
   app.getDB("units").set(id, writer.toString());
+  app.getGPUs().getHistory().save();
 }
 
 
@@ -1047,6 +1048,7 @@ void Unit::clean(const string &result) {
 
     // Remove from DB
     TRY_CATCH_ERROR(app.getDB("units").unset(id));
+    app.getGPUs().getHistory().end(id, result);
   }
 
   bool downloaded = UNIT_DOWNLOAD < getState();

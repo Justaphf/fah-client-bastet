@@ -1,0 +1,14 @@
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767355200,"last":1767355380,"finish":1767355800,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767441600,"last":1767441780,"finish":1767442200,"result":"credited"}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767355200,"last":1767355380,"finish":1767355800,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767441600,"last":1767441780,"finish":1767442200,"result":"credited"}
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767311940,"last":1767312000,"finish":1767312000,"result":"credited"}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767355200,"last":1767355380,"finish":1767355800,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767441600,"last":1767441780,"finish":1767442200,"result":"credited"}
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260102={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260103={"bucket":60,"rollup":true,"tags":["U2"]}

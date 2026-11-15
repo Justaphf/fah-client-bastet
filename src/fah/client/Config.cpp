@@ -34,6 +34,7 @@
 #include <cbang/log/Logger.h>
 #include <cbang/json/Reader.h>
 #include <cbang/os/SystemInfo.h>
+#include <cbang/time/Time.h>
 
 #include <cmath>
 
@@ -172,6 +173,70 @@ unsigned Config::getGPUTelemetryInterval() const {
 
 bool Config::getGPUTelemetryHistory() const {
   return getBoolean("gpu_telemetry_history", false);
+}
+
+
+unsigned Config::getGPUTelemetryBucket() const {
+  double secs = getNumber("gpu_telemetry_bucket", 60);
+  if (std::isnan(secs)) return 60;
+  if (secs < 10)   return 10;
+  if (3600 < secs) return 3600;
+
+  // Divides a day, so no bucket spans two days of the GPU history
+  unsigned bucket = (unsigned)secs;
+  while (Time::SEC_PER_DAY % bucket) bucket++;
+  return bucket;
+}
+
+
+bool Config::getGPUTelemetryContinuous() const {
+  return getBoolean("gpu_telemetry_continuous", false);
+}
+
+
+unsigned Config::getGPUTelemetryHistoryDays() const {
+  double days = getNumber("gpu_telemetry_history_days", 30);
+  if (std::isnan(days)) return 30;
+  if (days < 1)    return 1;
+  if (3650 < days) return 3650;
+  return (unsigned)days;
+}
+
+
+map<unsigned, unsigned> Config::getGPUTelemetryAging() const {
+  // Age in days to bucket length, the longest if days repeat
+  map<unsigned, unsigned> tiers;
+  if (!hasList("gpu_telemetry_aging")) return tiers;
+
+  unsigned invalid = 0;
+  for (auto &tier: *get("gpu_telemetry_aging")) {
+    if (!tier->isDict() || !tier->hasNumber("days") ||
+        !tier->hasNumber("bucket")) {
+      invalid++;
+      continue;
+    }
+
+    double days = tier->getNumber("days");
+    double secs = tier->getNumber("bucket");
+    if (std::isnan(days) || std::isnan(secs)) {
+      invalid++;
+      continue;
+    }
+
+    days = days < 1 ? 1 : (36500 < days ? 36500 : days);
+    secs = secs < 10 ? 10 : (3600 < secs ? 3600 : secs);
+
+    auto &bucket = tiers[(unsigned)days];
+    if (bucket < secs) bucket = (unsigned)secs;
+  }
+
+  string list = get("gpu_telemetry_aging")->toString();
+  if (invalid && list != agingWarned)
+    LOG_WARNING("Ignoring " << invalid << " invalid gpu_telemetry_aging "
+                "entries");
+  agingWarned = invalid ? list : "";
+
+  return tiers;
 }
 
 

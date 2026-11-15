@@ -1,0 +1,5 @@
+[
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"sample": {"time": 1767261660, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 240, "step": 60},
+  {"range": "gpu:01:00:00", "from": 1767263520, "to": 1767270720, "points": 10}
+]

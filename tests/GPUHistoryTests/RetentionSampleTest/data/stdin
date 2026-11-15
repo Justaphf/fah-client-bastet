@@ -1,0 +1,7 @@
+[
+  {"config": {"gpu_telemetry_history_days": 2}},
+  {"sample": {"time": 1767268800, "weight": 1, "units": ["U1"], "gpu_clock": 1400, "power": 38, "pstate": 0, "now": 1767700800}},
+  {"sample": {"time": 1767614400, "weight": 1, "units": ["U1"], "gpu_clock": 1400, "power": 38, "pstate": 0, "now": 1767700800}},
+  {"flush": true},
+  {"dump": "gpu_history_days"}
+]

@@ -1,0 +1,4 @@
+{
+  "command": "%(suite-dir)s/gpuHistory",
+  "args": "--log-to-screen=false"
+}

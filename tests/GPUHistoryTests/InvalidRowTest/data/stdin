@@ -1,0 +1,18 @@
+[
+  {"set": ["gpu_history", "gpu:01:00:00/20260101", "{\"U1\":{\"bucket\":0},\"U2\":{\"bucket\":300,\"fields\":[\"gpu_clock\"],\"states\":[],\"rows\":[[1767268800,300,[1000,1000,300000,300]]]},\"U7\":{\"bucket\":300,\"fields\":[\"gpu_clock\"],\"states\":[],\"rows\":[[1767268800,300,[1000,1000,300000,300]]]}}"]},
+  {"set": ["gpu_history", "gpu:01:00:00/20260102", "[1,2]"]},
+  {"set": ["gpu_history", "gpu:01:00:00/2026XX01", "{}"]},
+  {"set": ["gpu_history_units", "U2", "{\"gpus\":[\"gpu:01:00:00\"],\"first\":1767268800,\"last\":1767269100,\"finish\":1767269200,\"result\":\"credited\"}"]},
+  {"set": ["gpu_history_units", "U5", "{\"gpus\":5}"]},
+  {"sample": {"time": 1767269410, "weight": 1, "units": ["U1"], "gpu_clock": 1400, "power": 38, "pstate": 0}},
+  {"sample": {"time": 1767269420, "weight": 1, "units": ["U6"], "gpu_clock": 1400, "power": 38, "pstate": 0}},
+  {"sample": {"time": 1767268830, "weight": 1, "units": ["U7"], "gpu_clock": 1600, "power": 38, "pstate": 0}},
+  {"sample": {"time": 1767312010, "weight": 1, "units": ["U1"], "gpu_clock": 1300, "power": 38, "pstate": 0}},
+  {"flush": true},
+  {"now": 1767484800},
+  {"prune": true},
+  {"dump": true},
+  {"series": "U2", "compare": false},
+  {"series": "U5"},
+  {"series": "U7", "compare": false}
+]

@@ -105,6 +105,7 @@ namespace FAH {
 
       cb::DB::NameValueTable &getDB(
         const std::string name, bool ordered = false);
+      void closeDB(const std::string &name) {tables.erase(name);}
 
       Server           &getServer()     {return *server;}
       Account          &getAccount()    {return *account;}

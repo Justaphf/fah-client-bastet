@@ -1,0 +1,14 @@
+[
+  {"sample": {"time": 1767268800, "weight": 1, "units": ["U1"], "gpu_clock": 1400, "power": 38, "pstate": 0}, "repeat": 20, "step": 86400},
+  {"flush": true},
+  {"config": {"gpu_telemetry_aging": [{"days": 1, "bucket": 120}]}},
+  {"now": 1769040000},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"restart": true},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"restart": true},
+  {"prune": true},
+  {"dump": "gpu_history_days"}
+]

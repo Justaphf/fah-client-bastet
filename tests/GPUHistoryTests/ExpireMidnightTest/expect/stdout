@@ -1,0 +1,8 @@
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767269400,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767355200,"last":1767355260,"finish":null,"result":null}
+dump
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767355200,"last":1767355380,"finish":1767355800,"result":"credited"}
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767398280,"last":1767398340,"finish":1767398430,"result":"credited"}
+dump
+gpu_history_units U3={"gpus":["gpu:01:00:00"],"first":1767398280,"last":1767398340,"finish":1767398430,"result":"credited"}

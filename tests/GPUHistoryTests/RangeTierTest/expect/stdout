@@ -1,0 +1,10 @@
+range gpu:01:00:00 bucket=1920 rows=9 units=1
+range gpu:01:00:00 bucket=1920 rows=9 units=1
+dump
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20251231={"bucket":1920,"rollup":false,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260101={"bucket":1920,"rollup":false,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260102={"bucket":1920,"rollup":false,"tags":["U1"]}
+gpu_history_days gpu:01:00:00/20260103={"bucket":64,"rollup":true,"tags":["U1"]}
+range gpu:01:00:00 bucket=3600 rows=8 units=1
+range gpu:01:00:00 bucket=3600 rows=8 units=1

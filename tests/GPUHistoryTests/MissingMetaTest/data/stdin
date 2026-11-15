@@ -1,0 +1,15 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"flush": true},
+  {"sql": "DELETE FROM gpu_history_days WHERE name = 'gpu:01:00:00/20260101'"},
+  {"restart": true},
+  {"sample": {"time": 1767269400, "weight": 60, "units": ["U1"], "gpu_clock": 1300, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"dump": "gpu_history"},
+  {"sql": "DELETE FROM gpu_history_days"},
+  {"restart": true},
+  {"sample": {"time": 1767269700, "weight": 60, "units": ["U1"], "gpu_clock": 1200, "power": 40, "pstate": 0}},
+  {"flush": true},
+  {"dump": true},
+  {"series": "U1"}
+]

@@ -1,0 +1,17 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"sample": {"time": 1767312060, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"config": {"gpu_telemetry_aging": [{"days": 1, "bucket": 3600}]}},
+  {"sql": "CREATE TRIGGER fail BEFORE INSERT ON gpu_history BEGIN SELECT RAISE(ABORT, 'test'); END"},
+  {"now": 1767402000},
+  {"prune": true},
+  {"crash": true},
+  {"sql": "DROP TRIGGER fail"},
+  {"dump": "gpu_history_days"},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"prune": true},
+  {"dump": "gpu_history_days"},
+  {"dump": "gpu_history"}
+]

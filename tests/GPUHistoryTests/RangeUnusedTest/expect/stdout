@@ -1,0 +1,5 @@
+range gpu:01:00:00=null
+tables gpu_history gpu_history_days
+series U1=null
+per-unit U1=same
+tables gpu_history gpu_history_days gpu_history_units

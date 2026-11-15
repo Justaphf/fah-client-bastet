@@ -1,0 +1,11 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"flush": true},
+  {"crash": true},
+  {"set": ["wu_log", "U1", "{\"id\":\"U1\",\"end_time\":\"2026-01-01T10:00:00Z\",\"result\":\"credited\"}"]},
+  {"now": 1767270000},
+  {"prune": true},
+  {"dump": "gpu_history_units"},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767270000},
+  {"series": "U1", "compare": false}
+]

@@ -1,0 +1,17 @@
+[
+  {"config": {"gpu_telemetry_history_days": 1}},
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN"}},
+  {"unit": {"id": "U3", "number": 3, "group": "gpu", "state": "RUN"}},
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"sample": {"time": 1767434460, "weight": 60, "units": ["U3"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 3, "step": 60},
+  {"flush": true},
+  {"restart": true},
+  {"sample": {"time": 1767441660, "weight": 60, "units": ["U2"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"dump": "gpu_history_units"},
+  {"remove": "U1"},
+  {"remove": "U3"},
+  {"set": ["wu_log", "U3", "{\"id\":\"U3\",\"end_time\":\"2026-01-03T11:30:00Z\",\"result\":\"credited\"}"]},
+  {"now": 1767442200},
+  {"end": "U2", "result": "credited"},
+  {"dump": "gpu_history_units"}
+]

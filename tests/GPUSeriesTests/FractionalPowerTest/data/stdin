@@ -1,0 +1,8 @@
+{
+  "bucket": 60,
+  "checkpoint": true,
+  "samples": [
+    {"time": 1800000010, "weight": 10, "power": 28.892},
+    {"time": 1800000020, "weight": 10, "power": 28.4}
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {"config": {"gpu_telemetry_continuous": true}},
+  {"sample": {"time": 1767225660, "weight": 60, "gpu_clock": 1000, "power": 20, "pstate": 0}, "repeat": 600, "step": 60},
+  {"now": 1767261600},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767261600, "brief": true},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767261600, "points": 100, "brief": true},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767261600, "points": 1000000000.0, "brief": true},
+  {"range": "gpu:01:00:00", "from": 1767225600, "to": 1767261600, "points": 3}
+]

@@ -1,0 +1,10 @@
+[
+  {"config": {"gpu_telemetry_history": false}},
+  {"end": "U9", "result": "credited"},
+  {"tables": true},
+  {"config": {"gpu_telemetry_history": true}},
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}},
+  {"end": "U9", "result": "credited"},
+  {"tables": true},
+  {"dump": "gpu_history"}
+]

@@ -1,0 +1,12 @@
+series={
+  "bucket": 60,
+  "fields": ["gpu_clock", "power", "fan0", "mem_util", "fan1"],
+  "states": ["pstate", "pcie_gen"],
+  "rows": [
+    [1800000000, 2, [1400, 1410, 1405], [35, 37, 36], [50, 52, 51], null, null, 0, null],
+    [1800000060, 1, [1420, 1420, 1420], null, null, null, null, null, null],
+    [1800000120, 1, [1430, 1430, 1430], [40, 40, 40], [55, 55, 55], [0, 0, 0], [30, 30, 30], 0, 3]
+  ]
+}
+uninterrupted=same
+restored=same

@@ -1,0 +1,7 @@
+restart
+dump
+gpu_history_units_away U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268920,"finish":null,"result":null}
+gpu_history_units_away U2={"gpus":["gpu:01:00:00"],"first":1767269040,"last":1767269160,"finish":1767269800,"result":"dumped"}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268920,"finish":1767269800,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767269040,"last":1767269160,"finish":1767269800,"result":"dumped"}

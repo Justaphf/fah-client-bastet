@@ -1,0 +1,7 @@
+[
+  {"config": {"gpu_telemetry_continuous": true}},
+  {"sample": {"time": 1767268800, "weight": 60, "gpu_clock": 300, "power": 5, "pstate": 8}, "repeat": 5, "step": 60},
+  {"dump": true},
+  {"sample": {"time": 1767269100, "weight": 60, "gpu_clock": 300, "power": 5, "pstate": 8}},
+  {"dump": true}
+]

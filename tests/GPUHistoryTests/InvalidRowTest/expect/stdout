@@ -1,0 +1,18 @@
+dump
+gpu_history gpu:01:00:00/20260101={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767269400,1,[1400,1400,1400,1],[38,38,38,1],{"0":1}]]},"U2":{"bucket":300,"fields":["gpu_clock"],"states":[],"rows":[[1767268800,300,[1000,1000,300000,300]]]},"U6":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767269400,1,[1400,1400,1400,1],[38,38,38,1],{"0":1}]]},"U7":{"bucket":300,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,301,[1000,1600,301600,301],[38,38,38,1],{"0":1}]]}}
+gpu_history gpu:01:00:00/20260102={"U1":{"bucket":60,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767312000,1,[1300,1300,1300,1],[38,38,38,1],{"0":1}]]}}
+gpu_history gpu:01:00:00/2026XX01={}
+gpu_history_days complete=true
+gpu_history_days gpu:01:00:00/20260101={"bucket":60,"rollup":true,"tags":["U1","U2","U6","U7"]}
+gpu_history_days gpu:01:00:00/20260102={"bucket":60,"rollup":true,"tags":["U1"]}
+gpu_history_rollup gpu:01:00:00/20260101={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,1,[1400,1400,1400,1],[38,38,38,1],{"0":1}]]},"U2":{"bucket":1800,"fields":["gpu_clock"],"states":[],"rows":[[1767268800,300,[1000,1000,300000,300]]]},"U6":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,1,[1400,1400,1400,1],[38,38,38,1],{"0":1}]]},"U7":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,301,[1000,1600,301600,301],[38,38,38,1],{"0":1}]]}}
+gpu_history_rollup gpu:01:00:00/20260102={"U1":{"bucket":1800,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767312000,1,[1300,1300,1300,1],[38,38,38,1],{"0":1}]]}}
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767269409,"last":1767312010,"finish":null,"result":null}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767269100,"finish":1767269200,"result":"credited"}
+gpu_history_units U5={"gpus":5}
+gpu_history_units U6={"gpus":["gpu:01:00:00"],"first":1767269419,"last":1767269420,"finish":null,"result":null}
+gpu_history_units U7={"gpus":["gpu:01:00:00"],"first":1767268829,"last":1767268830,"finish":null,"result":null}
+series U2={"gpu:01:00:00":{"bucket":300,"fields":["gpu_clock"],"states":[],"rows":[[1767268800,300,[1000,1000,1000]]]}}
+series U5=null
+per-unit U5=same
+series U7={"gpu:01:00:00":{"bucket":300,"fields":["gpu_clock","power"],"states":["pstate"],"rows":[[1767268800,301,[1000,1600,1001.993355],[38,38,38],0]]}}

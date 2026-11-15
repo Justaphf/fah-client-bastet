@@ -1,0 +1,7 @@
+[
+  {"sample": {"time": 1767311460, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 10, "step": 60},
+  {"flush": true},
+  {"config": {"gpu_telemetry_bucket": 80}},
+  {"sample": {"time": 1767312080, "weight": 80, "units": ["U1"], "gpu_clock": 1000, "power": 40, "pstate": 0}, "repeat": 10, "step": 80},
+  {"series": "U1", "compare": false}
+]

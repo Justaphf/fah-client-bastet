@@ -1,0 +1,17 @@
+[
+  {"unit": {"id": "UA", "number": 1, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["UA"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"flush": true},
+  {"dump": true},
+  {"set": ["gpu_history", "gpu:01:00:00/20260101", "{\"UA\":{\"bucket\":60,\"fields\":[\"gpu_clock\",\"power\"],\"states\":[\"pstate\"],\"rows\":[[1767268800,60,[1400,1400,84000,60],[40,40,2400,60],{\"0\":60}],[1767268860,60,[1400,1400,84000,60],[40,40,2400,60],{\"0\":60}]]},\"UB\":{\"bucket\":60,\"fields\":[\"gpu_clock\",\"power\"],\"states\":[\"pstate\"],\"rows\":[[1767268200,60,[1100,1100,66000,60],[40,40,2400,60],{\"0\":60}],[1767268260,60,[1100,1100,66000,60],[40,40,2400,60],{\"0\":60}]]}}"]},
+  {"set": ["gpu_history_units", "UB", "{\"gpus\":[\"gpu:01:00:00\"],\"first\":1767268200,\"last\":1767268320,\"finish\":1767268330,\"result\":\"credited\"}"]},
+  {"set": ["gpu_history_days", "gpu:01:00:00/20260101", "{}"]},
+  {"restart": true},
+  {"now": 1767398400},
+  {"range": "gpu:01:00:00", "from": 1767139200, "to": 1767398400, "brief": true},
+  {"dump": "gpu_history_days"},
+  {"dump": "gpu_history_rollup"},
+  {"series": "UB", "compare": false},
+  {"series": "UA"},
+  {"range": "gpu:01:00:00", "from": 1767265200, "to": 1767272400}
+]

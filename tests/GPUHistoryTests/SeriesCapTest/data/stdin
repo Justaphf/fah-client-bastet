@@ -1,0 +1,9 @@
+[
+  {"config": {"gpu_telemetry_bucket": 10}},
+  {"sample": {"time": 1767304810, "weight": 10, "units": ["U1"], "gpu_clock": 1400, "power": 38, "pstate": 0}, "repeat": 720, "step": 10},
+  {"flush": true},
+  {"sample": {"time": 1767312010, "weight": 10, "units": ["U1"], "gpu_clock": 1300, "power": 38, "pstate": 0}, "repeat": 700, "step": 10},
+  {"restart": true},
+  {"sample": {"time": 1767319010, "weight": 10, "units": ["U1"], "gpu_clock": 1200, "power": 38, "pstate": 0}, "repeat": 800, "step": 10},
+  {"series": "U1", "brief": true}
+]

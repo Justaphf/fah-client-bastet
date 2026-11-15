@@ -1,0 +1,6 @@
+crash
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":null,"result":null}
+dump
+gpu_history_units U1={"gpus":["gpu:01:00:00"],"first":1767268800,"last":1767268980,"finish":1767270000,"result":"credited"}
+gpu_history_units U2={"gpus":["gpu:01:00:00"],"first":1767272400,"last":1767272460,"finish":1767272700,"result":"credited"}

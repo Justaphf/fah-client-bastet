@@ -1,0 +1,7 @@
+[
+  {"sample": {"time": 1767268860, "weight": 60, "units": ["U1"], "gpu_clock": 1400, "power": 40, "pstate": 0}, "repeat": 2, "step": 60},
+  {"now": 1767269100},
+  {"end": "U1", "result": ""},
+  {"dump": "gpu_history_units"},
+  {"range": "gpu:01:00:00", "from": 1767268800, "to": 1767269100}
+]
