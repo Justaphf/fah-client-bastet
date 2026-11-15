@@ -35,6 +35,8 @@
 #include <cbang/json/Reader.h>
 #include <cbang/os/SystemInfo.h>
 
+#include <cmath>
+
 using namespace FAH::Client;
 using namespace cb;
 using namespace std;
@@ -156,6 +158,15 @@ bool Config::isComputeDeviceEnabled(const string &type) const {
 void Config::disableGPU(const string &id) {
   auto &gpus = *get("gpus");
   if (gpus.has(id)) gpus.erase(id);
+}
+
+
+unsigned Config::getWUDisplayLimit() const {
+  double count = getNumber("wu_display_limit", 500);
+  if (std::isnan(count)) return 500;
+  if (count < 1)     return 1;
+  if (2000 < count)  return 2000;
+  return (unsigned)count;
 }
 
 

@@ -1,6 +1,7 @@
 {
-  "user":    "Anonymous",
-  "team":    0,
-  "passkey": "",
-  "cause":   "any"
+  "user":             "Anonymous",
+  "team":             0,
+  "passkey":          "",
+  "cause":            "any",
+  "wu_display_limit": 500
 }

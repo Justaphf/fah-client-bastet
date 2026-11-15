@@ -98,7 +98,7 @@ void Remote::sendWUs() {
   app.getDB("wu_log", true)
     .foreach([&wus] (const string &id, const string &data) {
       TRY_CATCH_ERROR(wus->append(JSON::parse(data)));
-    }, 500);
+    }, app.getConfig()->getWUDisplayLimit());
 
   sendChanges(changes);
 }
@@ -125,6 +125,10 @@ void Remote::sendChanges(const JSON::ValuePtr &changes) {
     // Check for viz frame changes: ["units", <unit index>, "frames", #]
     if (changes->size() == 4 && changes->getString(0) == "units" &&
         changes->getString(2) == "frames") sendViz();
+
+    // Resend WUs when the limit changes: ["config", "wu_display_limit", #]
+    if (changes->size() == 3 && changes->getString(0) == "config" &&
+        changes->getString(1) == "wu_display_limit") sendWUs();
 
   } catch (const Exception &e) {
     close();
