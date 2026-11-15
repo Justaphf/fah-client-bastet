@@ -38,7 +38,9 @@
 #include "GPUResources.h"
 
 #include <cbang/Catch.h>
+#include <cbang/String.h>
 #include <cbang/log/Logger.h>
+#include <cbang/http/Request.h>
 #include <cbang/os/SystemUtilities.h>
 
 #include <cmath>
@@ -137,6 +139,25 @@ void Remote::sendChanges(const JSON::ValuePtr &changes) {
     close();
     LOG_WARNING("Lost connection to remote: " << e);
   }
+}
+
+
+void Remote::setForwarded(const HTTP::Request &req) {
+  // A proxy on this machine would make its own peers look local.  One that
+  // adds none of these headers cannot be told from a local program and is
+  // treated as one, like the client's other controls.
+  for (auto name: {"Forwarded", "X-Real-IP", "Via"})
+    if (req.inHas(name)) forwarded = true;
+
+  for (auto it: req.getInputHeaders())
+    if (String::startsWith(String::toLower(it.key()), "x-forwarded-"))
+      forwarded = true;
+}
+
+
+bool Remote::isLocal() const {
+  // A direct connection from this machine.  A relayed remote has no peer.
+  return !forwarded && getPeerAddr().unmapIPv4().isLoopback();
 }
 
 

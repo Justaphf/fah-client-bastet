@@ -185,6 +185,7 @@ bool Server::redirectPing(HTTP::Request &req) {
 
 bool Server::handleWebsocket(HTTP::Request &req) {
   auto ws = SmartPtr(new WebsocketRemote(app));
+  ws->setForwarded(req);
   ws->upgrade(req);
   app.add(ws);
   return true;

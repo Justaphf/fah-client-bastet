@@ -44,6 +44,7 @@ namespace FAH {
 
       // From Remote
       std::string getName() const override {return name;}
+      cb::SockAddr getPeerAddr() const override;
       void send(const cb::JSON::ValuePtr &msg) override;
       void close() override;
 

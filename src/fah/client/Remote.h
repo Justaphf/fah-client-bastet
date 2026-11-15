@@ -32,6 +32,10 @@
 
 #include <cbang/json/JSON.h>
 #include <cbang/event/Event.h>
+#include <cbang/net/SockAddr.h>
+
+
+namespace cb {namespace HTTP {class Request;}}
 
 
 namespace FAH {
@@ -49,6 +53,7 @@ namespace FAH {
       unsigned vizFrame = 0;
       uint64_t lastLogLine = 0;
       bool sendWUsEnabled = false;
+      bool forwarded = false;
 
     public:
       Remote(App &app);
@@ -57,8 +62,12 @@ namespace FAH {
       App &getApp() const {return app;}
 
       virtual std::string getName() const = 0;
+      virtual cb::SockAddr getPeerAddr() const {return cb::SockAddr();}
       virtual void send(const cb::JSON::ValuePtr &msg) = 0;
       virtual void close() = 0;
+
+      void setForwarded(const cb::HTTP::Request &req);
+      bool isLocal() const;
 
       void sendViz();
       void sendWUs();

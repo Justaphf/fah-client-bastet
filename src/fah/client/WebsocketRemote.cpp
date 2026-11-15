@@ -41,6 +41,12 @@ WebsocketRemote::WebsocketRemote(App &app) : Remote(app) {
 }
 
 
+SockAddr WebsocketRemote::getPeerAddr() const {
+  auto conn = getConnection().toStrongPtr();
+  return conn.isSet() ? conn->getPeerAddr() : SockAddr();
+}
+
+
 void WebsocketRemote::send(const cb::JSON::ValuePtr &msg) {
   pingEvent->add(15);
   if (isActive()) WS::JSONWebsocket::send(*msg);
