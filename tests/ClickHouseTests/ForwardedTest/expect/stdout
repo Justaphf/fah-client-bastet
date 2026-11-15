@@ -1,0 +1,22 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+reply direct ["clickhouse_status",{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},2]
+log W :Refused ClickHouse commands from forwarded, only allowed on a local connection
+reply forwarded ["clickhouse",{"error":"Not available on this connection","code":"local_only"},3]
+log W :Refused ClickHouse commands from xff, only allowed on a local connection
+reply xff ["clickhouse",{"error":"Not available on this connection","code":"local_only"},4]
+log W :Refused ClickHouse commands from xfh, only allowed on a local connection
+reply xfh ["clickhouse",{"error":"Not available on this connection","code":"local_only"},5]
+log W :Refused ClickHouse commands from xfp, only allowed on a local connection
+reply xfp ["clickhouse",{"error":"Not available on this connection","code":"local_only"},6]
+log W :Refused ClickHouse commands from real-ip, only allowed on a local connection
+reply real-ip ["clickhouse_test",{"ok":false,"steps":[],"error":"Not available on this connection","code":"local_only"},7]
+log W :Refused ClickHouse commands from via, only allowed on a local connection
+reply via ["clickhouse",{"error":"Not available on this connection","code":"local_only"},8]
+log W :Refused ClickHouse commands from empty, only allowed on a local connection
+reply empty ["clickhouse_status",{"error":"Not available on this connection","code":"local_only"},9]
+log W :Refused ClickHouse commands from port, only allowed on a local connection
+reply port ["clickhouse_status",{"error":"Not available on this connection","code":"local_only"},10]
+reply near ["clickhouse_status",{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},11]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":259200} password=set
+leak output=none log=none db=none logged=lines stored=yes

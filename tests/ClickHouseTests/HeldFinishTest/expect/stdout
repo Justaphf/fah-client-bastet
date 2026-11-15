@@ -1,0 +1,44 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+started U0
+log W :Failed to read the ClickHouse settings
+restart
+held 600
+kept U0 U4 U7
+started U4 U5 U6
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":2,"rows_dropped":8,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  SELECT version()
+held 0
+kept none
+started U0 U6 U7
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":603,"rows_dropped":9,"rows_truncated":0,"schema":1}
+queue 1 fah_unit_events rows=1 token=e4b803cd9dba2941a4a11957ec16a8707113dea003a6ff02ca02da4f52330238
+  {"time":"2026-11-13 12:00:01.000","machine_id":"machine-id-1","machine_name":"test-machine","unit_id":"U0","event":"start","gpus":["gpu:01:00:00"],"project":0,"run":0,"clone":0,"gen":0,"result":"","schema":1,"data":{"number":0,"group":"gpu","run_time":0}}
+queue 2 fah_gpu_samples rows=1 token=c2d131be9737bda0f17f792069828374515e5e4c79e30b74b7671a2a6b131445
+  {"time":"2026-11-13 12:00:01.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0"],"schema":1,"data":{"power":1,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 3 fah_gpu_samples rows=600 token=1f1b14dd19643878e6f50bdc7f4b820159040b8a8a49ea59a4a4428e9407ce9a
+  {"time":"2026-11-13 12:00:10.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0","U5","U6"],"schema":1,"data":{"power":2,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:10.100","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0","U5","U6"],"schema":1,"data":{"power":2,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:10.200","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0","U5","U6"],"schema":1,"data":{"power":2,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:10.300","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0","U5","U6"],"schema":1,"data":{"power":2,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 595 lines
+  {"time":"2026-11-13 12:01:09.900","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U0","U5","U6"],"schema":1,"data":{"power":2,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 4 fah_unit_events rows=1 token=4eecfc822232ce96178c424f5acf9b0e153753dda8e9157b408552faf473a42a
+  {"time":"2026-11-13 12:01:14.000","machine_id":"machine-id-1","machine_name":"test-machine","unit_id":"U7","event":"start","gpus":["gpu:01:00:00"],"project":0,"run":0,"clone":0,"gen":0,"result":"","schema":1,"data":{"number":7,"group":"gpu","run_time":0}}
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Started, 0 rows queued
+file 2026-11-13T12:00:01Z Failed to read the settings: Failed to advance statement result: SQL error or missing database
+file 2026-11-13T12:01:09Z Dropped the finish row of unit U5, the settings were not read
+file 2026-11-13T12:01:09Z Dropped the start row of unit U5, the settings were not read
+file 2026-11-13T12:01:09Z Dropped the finish row of unit U6, the settings were not read
+file 2026-11-13T12:01:09Z Dropped the start row of unit U6, the settings were not read
+file 2026-11-13T12:01:09Z Dropped the finish row of unit U6, the settings were not read
+file 2026-11-13T12:01:14Z Dropped the finish row of unit U4, the settings were not read
+file 2026-11-13T12:01:14Z Dropped the start row of unit U4, the settings were not read
+file 2026-11-13T12:01:14Z Dropped the finish row of unit U0, the settings were not read
+file 2026-11-13T12:03:20Z Settings loaded: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:03:20Z Started, 2 rows queued
+file 2026-11-13T12:03:20Z Dropped 1 row, the settings were not read

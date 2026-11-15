@@ -1,0 +1,35 @@
+gate "127.0.0.1" local=true
+gate "127.1.2.3" local=true
+gate "::1" local=true
+gate "::ffff:127.0.0.1" local=true
+gate "::ffff:7f00:5" local=true
+gate "192.168.1.5" local=false
+gate "10.0.0.1" local=false
+gate "0.0.0.0" local=false
+gate "::" local=false
+gate "::ffff:192.168.1.5" local=false
+gate "fe80::1" local=false
+gate "2001:db8::1" local=false
+gate "::2" local=false
+gate "128.0.0.1" local=false
+gate null local=false
+node local=false
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":259200} password=set
+log W :Refused ClickHouse commands from lan, only allowed on a local connection
+reply lan ["clickhouse",{"error":"Not available on this connection","code":"local_only"},2]
+reply lan ["clickhouse_status",{"error":"Not available on this connection","code":"local_only"},"s"]
+log W :Refused ClickHouse commands from relay, only allowed on a local connection
+reply relay ["clickhouse_test",{"ok":false,"steps":[],"error":"Not available on this connection","code":"local_only"},3]
+log W :Refused ClickHouse commands from mapped, only allowed on a local connection
+reply mapped ["clickhouse",{"error":"Not available on this connection","code":"local_only"},4]
+log W :Refused ClickHouse commands from app-lan, only allowed on a local connection
+reply app-lan ["clickhouse",{"error":"Not available on this connection","code":"local_only"},5]
+log W :Refused ClickHouse commands from app-relay, only allowed on a local connection
+reply app-relay ["clickhouse_status",{"error":"Not available on this connection","code":"local_only"},6]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":259200} password=set
+reply local6 ["clickhouse_status",{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},7]
+reply local4 ["clickhouse_bogus",{"error":"Unsupported command","code":"unsupported"},8]
+tables
+leak output=none log=none db=none logged=lines stored=yes

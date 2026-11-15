@@ -1,0 +1,173 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=19-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse settings or permissions are wrong, queueing GPU telemetry (code 516)
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=19-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=19-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Created fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},2]
+request url=http://localhost:8123 user=writer password=19-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: got *** and ***","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=http://localhost:8123 user=writer password=5-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=5-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse"},{"name":"database","ok":false,"message":"Database fah does not exist or this user cannot access it"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://localhost:8123 user=writer password=2-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: ***","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},5]
+leak output=none log=none db=none logged=lines stored=yes
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=5-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},6]
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+leak output=none log=none db=none logged=lines stored=yes
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=2-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},7]
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password ### is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=1-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password ### is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},8]
+request url=http://localhost:8123 user=writer password=1-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: a ~~~ b ~~~ c","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},9]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=5-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},10]
+request url=http://localhost:8123 user=writer password=3-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: got *** and ***","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},11]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=4-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},12]
+request url=http://localhost:8123 user=writer password=3-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: got *** and ***","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},13]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=2-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},14]
+request url=http://localhost:8123 user=writer password=7-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: bad *** end","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},15]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=7-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},16]
+request url=http://localhost:8123 user=writer password=2-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: bad *** end","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},17]
+request url=http://localhost:8123 user=writer password=4-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: got *** end","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},18]
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Started, 0 rows queued
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse 25.7.5.34
+file 2026-11-13T12:00:00Z Test step database: ok, Database fah found
+file 2026-11-13T12:00:00Z Test step tables: ok, Created fah_gpu_samples, fah_unit_events
+file 2026-11-13T12:00:00Z Test step insert: ok, Inserts allowed, no rows written
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse
+file 2026-11-13T12:00:00Z Test step database: failed, Database fah does not exist or this user cannot access it
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password ### is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password ### is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: a ~~~ b ~~~ c
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: a ~~~ b ~~~ c
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: got *** and ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: bad *** end
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: bad *** end
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Check request failed, step server: HTTP 403, ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)
+file 2026-11-13T12:00:00Z ClickHouse settings or permissions are wrong: ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED), next try at 2026-11-13T12:15:00Z
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: bad *** end
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: bad *** end
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:999: got *** end
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:999: got *** end
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=yes
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no

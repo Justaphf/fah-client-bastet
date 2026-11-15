@@ -1,0 +1,12 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=1-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: ********************************************************************************************************************************************************************************************************************************************************************************************...","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+file 2026-11-13T12:00:00Z Settings saved: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password stored
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 403, ClickHouse:516: ********************************************************************************************************************************************************************************************************************************************************************************************...
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: ********************************************************************************************************************************************************************************************************************************************************************************************...
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run

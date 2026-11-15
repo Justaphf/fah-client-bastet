@@ -1,0 +1,13 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+started U1 U2
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},2]
+log I1:Sending GPU telemetry to ClickHouse
+log W :Failed to read ClickHouse units: Failed to prepare statement: SELECT token FROM clickhouse_queue WHERE dest = 'fah_unit_events': no such column: token
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},3]
+started U1 U2

@@ -1,0 +1,19 @@
+tables
+log I1:Sending GPU telemetry to ClickHouse
+request url=https://localhost:8443 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"https://localhost:8443","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=https://localhost:8443 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=https://localhost:8443 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=https://localhost:8443 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=https://localhost:8443 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+respond nothing open
+reply local ["clickhouse_status",{"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},2]
+tables
+stored settings={"enabled":true,"url":"https://localhost:8443","database":"fah","user":"writer","ca":"","queue_max":259200} password=set

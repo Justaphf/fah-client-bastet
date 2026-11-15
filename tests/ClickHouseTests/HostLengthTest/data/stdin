@@ -1,0 +1,14 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"url": "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd:8123", "database": "fah", "user": "writer"}}},
+  {"local": {"cmd": "clickhouse_test", "id": 2, "config": {"url": "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd:8123", "database": "fah", "user": "writer"}}},
+  {"stored": true},
+  {"local": {"cmd": "clickhouse", "id": 3, "config": {"url": "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd:8123", "database": "fah", "user": "writer"}}},
+  {"stored": true},
+  {"local": {"cmd": "clickhouse_test", "id": 4}},
+  {"respond": {"transport": "End of file"}},
+  {"set": ["config", "clickhouse", "{\"enabled\":true,\"url\":\"http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd:8123\",\"database\":\"fah\",\"user\":\"writer\",\"ca\":\"\",\"queue_max\":259200}"]},
+  {"restart": true},
+  {"status": true},
+  {"stored": true}
+]

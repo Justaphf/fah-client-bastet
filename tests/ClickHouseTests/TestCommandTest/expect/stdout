@@ -1,0 +1,55 @@
+reply local ["clickhouse_test",{"ok":false,"steps":[],"error":"Enter the URL and database first","code":"unconfigured"},1]
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},2]
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[],"error":"A connection test is already running","code":"busy"},4]
+status {"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":true,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=13-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=13-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=13-chars timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Created fah_unit_events; Found fah_gpu_samples"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},3]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200} password=set
+request url=https://ch.example.org user=writer password=none timeout=10
+  SELECT version()
+request url=https://ch.example.org user=writer password=none timeout=10 params={"db":"fah2"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.8.1.1"},{"name":"database","ok":false,"message":"Database fah2 does not exist or this user cannot access it"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},"candidate"]
+request url=https://ch.example.org user=writer password=15-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Connection failed: End of file (with https, check the CA)"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},5]
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=13-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=13-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Created fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":false,"message":"ClickHouse:164: reader: Cannot execute query in readonly mode. (READONLY)","code":164}]},6]
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: writer: Authentication failed: password is incorrect. (AUTHENTICATION_FAILED)","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},7]
+request url=http://localhost:8123 user=writer password=13-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Timed out after 10s"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},8]
+reply local ["clickhouse_test",{"ok":false,"steps":[],"error":"URL must start with http:// or https://","code":"invalid"},9]
+reply local ["clickhouse_test",{"ok":false,"steps":[],"error":"Enter the URL and database first","code":"unconfigured"},10]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200} password=set
+status {"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+tables
+leak output=none log=none db=none logged=lines stored=yes
+leak output=none log=none db=none logged=lines stored=no

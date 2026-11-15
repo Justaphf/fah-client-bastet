@@ -1,0 +1,104 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"552ef32731d4d95c3c094abd40b04ee7dcb74498f876fee72408c50b33af2042"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:01:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log W :ClickHouse settings or permissions are wrong, queueing GPU telemetry (code 497)
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant INSERT ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T12:01:06Z","next_retry":"2026-11-13T12:16:06Z","rows_sent":0,"rows_queued":11,"rows_dropped":0,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant INSERT ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T12:01:06Z","next_retry":"2026-11-13T12:16:06Z","rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_gpu_samples rows=11 token=552ef32731d4d95c3c094abd40b04ee7dcb74498f876fee72408c50b33af2042
+queue 2 fah_gpu_samples rows=11 token=716af2b1b7b804cd87cd3c3f10c7469cb12ce8bd4fb75ff4f097c9504db476cf
+queue 3 fah_gpu_samples rows=11 token=e10b3d177d37b3fbd888f79f59da9fff3c4335db36dc9460697cbe8dbb18c245
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:516: writer: Authentication failed: password is incorrect, or there is no user with such name. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T13:31:06Z","next_retry":"2026-11-13T13:46:06Z","rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:516: writer: Authentication failed: password is incorrect, or there is no user with such name. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T13:31:06Z","next_retry":null,"rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}},2]
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Database fah does not exist or this user cannot access it","last_error_code":null,"last_error_time":"2026-11-13T13:31:06Z","next_retry":"2026-11-13T13:46:06Z","rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Database fah does not exist or this user cannot access it","last_error_code":null,"last_error_time":"2026-11-13T13:31:06Z","next_retry":null,"rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}},3]
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant CREATE TABLE ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T13:31:06Z","next_retry":"2026-11-13T13:46:06Z","rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant CREATE TABLE ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T13:31:06Z","next_retry":null,"rows_sent":0,"rows_queued":41,"rows_dropped":0,"rows_truncated":0,"schema":1}},4]
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=14-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"552ef32731d4d95c3c094abd40b04ee7dcb74498f876fee72408c50b33af2042"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:01:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log I1:ClickHouse is reachable again
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"716af2b1b7b804cd87cd3c3f10c7469cb12ce8bd4fb75ff4f097c9504db476cf"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:01:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:01:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:01:24.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:02:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T13:31:12Z","last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant CREATE TABLE ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T13:31:06Z","next_retry":null,"rows_sent":22,"rows_queued":19,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 3 fah_gpu_samples rows=11 token=e10b3d177d37b3fbd888f79f59da9fff3c4335db36dc9460697cbe8dbb18c245
+queue 4 fah_gpu_samples rows=8 token=2fe10f5a40d22724e3a3d7d845f38eda51bb017e79260562b473187d252a55fa
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"e10b3d177d37b3fbd888f79f59da9fff3c4335db36dc9460697cbe8dbb18c245"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:02:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:24.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:30.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:03:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+request url=http://localhost:8123 user=writer password=14-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"2fe10f5a40d22724e3a3d7d845f38eda51bb017e79260562b473187d252a55fa"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:03:24.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:30.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:36.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:42.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:48.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:54.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:04:00.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:04:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T13:31:14Z","last_error":"ClickHouse:497: writer: Not enough privileges. To execute this query, it's necessary to have the grant CREATE TABLE ON fah.fah_gpu_samples. (ACCESS_DENIED)","last_error_code":497,"last_error_time":"2026-11-13T13:31:06Z","next_retry":null,"rows_sent":41,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue empty
+scan "localhost" log=none
+scan "8123" log=none
+scan "writer" log=none
+scan "fah.fah_gpu_samples" log=none
+scan "25.7.5.34" log=none
+scan "Not enough privileges" log=none
+scan "Authentication failed" log=none
+leak output=none log=none db=none logged=lines stored=yes

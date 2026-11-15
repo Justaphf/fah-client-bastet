@@ -31,6 +31,7 @@
 #include "GPUResource.h"
 #include "GPUSampleSink.h"
 #include "GPUHistory.h"
+#include "ClickHouseSink.h"
 
 #include <cbang/hw/GPUIndex.h>
 #include <cbang/event/Event.h>
@@ -64,6 +65,7 @@ namespace FAH {
 
       std::vector<cb::SmartPointer<GPUSampleSink>> sinks;
       cb::SmartPointer<GPUHistory> history;
+      cb::SmartPointer<ClickHouseSink> clickHouse;
 
     public:
       GPUResources(App &app);
@@ -71,6 +73,7 @@ namespace FAH {
 
       bool isDetected() const {return detected;}
       GPUHistory &getHistory() {return *history;}
+      ClickHouseSink &getClickHouse() {return *clickHouse;}
 
       static double getSampleWeight(double last, double now,
                                     unsigned interval);

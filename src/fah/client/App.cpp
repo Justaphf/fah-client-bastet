@@ -444,6 +444,7 @@ void App::loadConfig() {
   d->insert("revision",           info.get(getName(), "Revision"));
   d->insertBoolean("has_battery", info.get("System",  "Has Battery") == "true");
   d->insertBoolean("on_battery",  info.get("System",  "On Battery")  == "true");
+  d->insertBoolean("clickhouse",  true); // Configured on local connections
 
   auto &db = getDB("config");
   bool genKey = !db.has("key");
@@ -514,6 +515,7 @@ void App::run() {
 
   // Event loop
   os->dispatch();
+  gpus->getClickHouse().save(); // Before the vacuum
 
   // Reduce database size
   LOG_DEBUG(3, "Vacuuming database");
@@ -575,6 +577,7 @@ void App::setup() {
   loadConfig();
   insert("groups", new Groups(*this));
   insert("units", new Units(*this));
+  gpus->getClickHouse().init();
 }
 
 

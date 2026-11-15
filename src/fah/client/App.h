@@ -103,6 +103,7 @@ namespace FAH {
       cb::HTTP::Client &getClient()    {return client;}
       cb::KeyPair      &getKey()       {return key;}
 
+      cb::DB::Database &getDatabase() {return db;}
       cb::DB::NameValueTable &getDB(
         const std::string name, bool ordered = false);
       void closeDB(const std::string &name) {tables.erase(name);}

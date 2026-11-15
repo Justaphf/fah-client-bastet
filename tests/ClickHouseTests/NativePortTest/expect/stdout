@@ -1,0 +1,17 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost user=writer password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Connection failed: Invalid response (check that the URL is the HTTP interface, not the native port)"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+request url=https://ch.example.org user=writer password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Connection failed: Invalid response (check that the URL is the HTTP interface, not the native port)"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=https://ch.example.org user=writer password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Connection failed: Connect Failed (with https, check the CA)"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=https://ch.example.org user=writer password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Timed out after 10s"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},5]
+request url=http://localhost user=writer password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Timed out after 10s"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},6]

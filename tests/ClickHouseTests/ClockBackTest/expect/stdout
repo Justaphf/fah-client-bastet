@@ -1,0 +1,10 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse unavailable, queueing GPU telemetry
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}

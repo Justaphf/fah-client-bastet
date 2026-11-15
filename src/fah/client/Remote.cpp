@@ -162,9 +162,13 @@ bool Remote::isLocal() const {
 
 
 void Remote::onMessage(const JSON::ValuePtr &msg) {
-  LOG_DEBUG(3, "msg: " << *msg);
-
   string cmd = msg->getString("cmd", "");
+
+  // These may carry a password, which is never logged
+  if (String::startsWith(cmd, "clickhouse"))
+    return app.getGPUs().getClickHouse().command(*this, *msg);
+
+  LOG_DEBUG(3, "msg: " << *msg);
 
   if (cmd == "dump")
     app.getUnits()->getUnit(msg->getString("unit", ""))->dumpWU();

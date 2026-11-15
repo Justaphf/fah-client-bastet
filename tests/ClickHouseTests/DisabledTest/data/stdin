@@ -1,0 +1,22 @@
+[
+  {"unit": {"id": "U1", "number": 1, "group": "gpu", "state": "RUN",
+            "gpus": ["gpu:01:00:00"]}},
+  {"sample": {"time": 1794571200, "units": ["U1"], "power": 100},
+   "repeat": 30, "step": 1},
+  {"finish": "U1", "result": "credited"},
+  {"pump": true},
+  {"status": true},
+  {"tables": true},
+  {"local": {"cmd": "clickhouse", "id": 1,
+             "config": {"url": "http://localhost:8123", "database": "fah"}}},
+  {"sample": {"time": 1794571300, "units": ["U1"], "power": 100},
+   "repeat": 30, "step": 1},
+  {"pump": true},
+  {"local": {"cmd": "clickhouse", "id": 2,
+             "config": {"enabled": true, "url": ""}}},
+  {"sample": {"time": 1794571400, "units": ["U1"], "power": 100},
+   "repeat": 30, "step": 1},
+  {"pump": true},
+  {"status": true},
+  {"tables": true}
+]

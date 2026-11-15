@@ -1,0 +1,20 @@
+[
+  {"now": 1794571200},
+  {"unit": {"id": "U1", "number": 7, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}, "fill": 300000},
+  {"unit": {"id": "U2", "number": 8, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}, "fill": 261807},
+  {"unit": {"id": "U3", "number": 9, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}, "fill": 261808},
+  {"set": ["clickhouse_units", "U2", "2026-11-13 11:00:00.000"]},
+  {"set": ["clickhouse_units", "U3", "2026-11-13 11:00:00.000"]},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer"}, "password": "pw-test-1234"}},
+  {"respond": {"body": {"meta": [{"name": "version()", "type": "String"}], "data": [["25.7.5.34"]], "rows": 1}}},
+  {"respond": {"body": {"data": [["fah"]]}}},
+  {"respond": {"body": {"data": []}}},
+  {"respond": {}},
+  {"respond": {}},
+  {"sample": {"time": 1794571201, "power": 10, "units": ["U1"]}},
+  {"finish": "U1", "result": "credited"},
+  {"finish": "U2", "result": "credited"},
+  {"finish": "U3", "result": "credited"},
+  {"status": true},
+  {"queue": true}
+]

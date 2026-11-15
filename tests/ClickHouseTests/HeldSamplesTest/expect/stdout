@@ -1,0 +1,70 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+held 0
+log W :Failed to read the ClickHouse settings
+restart
+held 2
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+held 3
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+held 0
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":4,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+  {"time":"2026-11-13 12:00:10.000","machine_id":"machine-id-1","machine_name":"test-machine","unit_id":"U1","event":"start","gpus":["gpu:01:00:00"],"project":0,"run":0,"clone":0,"gen":0,"result":"","schema":1,"data":{"number":7,"group":"gpu","run_time":0}}
+queue 2 fah_gpu_samples rows=3 token=da7a2c2f7a624017f85697f8bfad362de83e990a81342a0ffce7717b77ae0ed6
+  {"time":"2026-11-13 12:00:10.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U1"],"schema":1,"data":{"power":11,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:20.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U1"],"schema":1,"data":{"power":12,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:30.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":["U1"],"schema":1,"data":{"power":13,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":4,"rows_dropped":0,"rows_truncated":0,"schema":1}},2]
+held 0
+log W :Failed to read the ClickHouse settings
+restart
+held 600
+held 0
+status {"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":4,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 2 fah_gpu_samples rows=3 token=da7a2c2f7a624017f85697f8bfad362de83e990a81342a0ffce7717b77ae0ed6
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":4,"rows_dropped":0,"rows_truncated":0,"schema":1}},3]
+log W :Failed to read the ClickHouse settings
+restart
+held 600
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":4,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+held 0
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":604,"rows_dropped":5,"rows_truncated":0,"schema":1}
+queue 1 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 2 fah_gpu_samples rows=3 token=da7a2c2f7a624017f85697f8bfad362de83e990a81342a0ffce7717b77ae0ed6
+queue 3 fah_gpu_samples rows=600 token=781442452cd810249f8b89399265dba0e2ced6f7aced32400ef672679409c152
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Started, 0 rows queued
+file 2026-11-13T12:00:00Z Connected to ClickHouse 25.7.5.34
+file 2026-11-13T12:00:00Z Failed to read the settings: Failed to advance statement result: SQL error or missing database
+file 2026-11-13T12:01:00Z Settings loaded: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:01:00Z Started, 0 rows queued
+file 2026-11-13T12:02:00Z Settings saved: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password kept
+file 2026-11-13T12:02:00Z Stopped
+file 2026-11-13T12:02:10Z Failed to read the settings: Failed to advance statement result: SQL error or missing database
+file 2026-11-13T12:03:20Z Settings loaded: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:03:20Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password kept
+file 2026-11-13T12:03:20Z Started, 4 rows queued
+file 2026-11-13T12:03:20Z Failed to read the settings: Failed to advance statement result: SQL error or missing database
+file 2026-11-13T12:04:40Z Settings loaded: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:04:40Z Started, 4 rows queued
+file 2026-11-13T12:04:40Z Dropped 5 rows, the settings were not read

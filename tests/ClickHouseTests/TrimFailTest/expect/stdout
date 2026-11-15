@@ -1,0 +1,79 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":1000},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse unavailable, queueing GPU telemetry
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+queue 1 fah_gpu_samples rows=600 token=a7fef4199c90b8c9368652a2f7a95510ca492399e3bbaaaba04faff62d5b0313
+log W :Failed to trim ClickHouse queue, dropping new rows: Failed to advance statement result: Abort due to constraint violation
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":1200,"rows_dropped":0,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":1200,"rows_dropped":600,"rows_truncated":0,"schema":1}
+queue 1 fah_gpu_samples rows=600 token=a7fef4199c90b8c9368652a2f7a95510ca492399e3bbaaaba04faff62d5b0313
+queue 2 fah_gpu_samples rows=600 token=c04624726c38919d4c718e0c3b6928fd5dd71aa3ec9e1d831d7f88e368075db9
+log W :ClickHouse queue is full, dropped the oldest 600 rows
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":600,"rows_dropped":1800,"rows_truncated":0,"schema":1}
+queue 3 fah_gpu_samples rows=600 token=99a710997f8ecb9f5d08da7f1900bd84612536e20049de27e9d5a487c8693155
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"99a710997f8ecb9f5d08da7f1900bd84612536e20049de27e9d5a487c8693155"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:24.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:24.006","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:24.012","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 596 lines
+  {"time":"2026-11-13 12:00:27.594","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 3 fah_gpu_samples rows=600 token=99a710997f8ecb9f5d08da7f1900bd84612536e20049de27e9d5a487c8693155
+queue 4 fah_gpu_samples rows=11 token=1294d9e0b075aeed1dc1dfeaf78a67379c4939555186793346d5239f4fa69bfd
+log W :Failed to update ClickHouse queue: Failed to advance statement result: Abort due to constraint violation
+log I1:ClickHouse is reachable again
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:02:03Z","last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":600,"rows_queued":611,"rows_dropped":1800,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"1294d9e0b075aeed1dc1dfeaf78a67379c4939555186793346d5239f4fa69bfd"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:01:03.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:01:09.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:01:15.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:02:03.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:02:18Z","last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":611,"rows_queued":0,"rows_dropped":1800,"rows_truncated":0,"schema":1}
+queue empty
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"24bb83ca487a8c4465a9b43842b809c0f92d59aea404d1e5b70b6dc64049c8de"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:03:00.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:04:00.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 5 fah_gpu_samples rows=11 token=24bb83ca487a8c4465a9b43842b809c0f92d59aea404d1e5b70b6dc64049c8de
+queue 6 fah_gpu_samples rows=11 token=5ecfe0ea8ecc7eb7e7a88b6d9bc393cccc0f4c37ed05cc58e1e662da396ef746
+log W :Failed to update ClickHouse queue: Failed to advance statement result: Abort due to constraint violation
+log W :ClickHouse rejected 11 rows, dropped them (code 27)
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:02:18Z","last_error":"ClickHouse:27: bad","last_error_code":27,"last_error_time":"2026-11-13T12:05:06Z","next_retry":null,"rows_sent":611,"rows_queued":22,"rows_dropped":1811,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"5ecfe0ea8ecc7eb7e7a88b6d9bc393cccc0f4c37ed05cc58e1e662da396ef746"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:04:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:04:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:04:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:05:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:05:06Z","last_error":"ClickHouse:27: bad","last_error_code":27,"last_error_time":"2026-11-13T12:05:06Z","next_retry":null,"rows_sent":622,"rows_queued":0,"rows_dropped":1811,"rows_truncated":0,"schema":1}
+queue empty
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"a4684a7f5a72cec8cfbedd9fd7717896d32b587b61361c5e4e3aba697774bbd2"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:06:00.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:06:00.006","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:06:00.012","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 596 lines
+  {"time":"2026-11-13 12:06:03.594","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 7 fah_gpu_samples rows=600 token=a4684a7f5a72cec8cfbedd9fd7717896d32b587b61361c5e4e3aba697774bbd2
+log W :Failed to update ClickHouse queue: Failed to advance statement result: Abort due to constraint violation
+log W :ClickHouse queue is full, dropped the oldest 600 rows
+log W :Failed to update ClickHouse queue: Failed to advance statement result: Abort due to constraint violation
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:06:03Z","last_error":"ClickHouse:27: bad","last_error_code":27,"last_error_time":"2026-11-13T12:05:06Z","next_retry":null,"rows_sent":1222,"rows_queued":600,"rows_dropped":2411,"rows_truncated":0,"schema":1}
+queue 7 fah_gpu_samples rows=600 token=a4684a7f5a72cec8cfbedd9fd7717896d32b587b61361c5e4e3aba697774bbd2
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:06:03Z","last_error":"ClickHouse:27: bad","last_error_code":27,"last_error_time":"2026-11-13T12:05:06Z","next_retry":null,"rows_sent":1222,"rows_queued":0,"rows_dropped":2411,"rows_truncated":0,"schema":1}
+queue empty

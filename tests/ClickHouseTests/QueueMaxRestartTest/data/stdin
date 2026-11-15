@@ -1,0 +1,16 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1,
+             "config": {"url": "http://localhost:8123", "database": "fah",
+                        "user": "writer", "queue_max": 1000000}}},
+  {"sql": "CREATE TABLE IF NOT EXISTS clickhouse_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, dest TEXT NOT NULL, token TEXT NOT NULL, rows INTEGER NOT NULL, data TEXT NOT NULL)"},
+  {"sql": "INSERT INTO clickhouse_queue VALUES (1, 'fah_gpu_samples', 't1', 200000, '{}')"},
+  {"sql": "INSERT INTO clickhouse_queue VALUES (2, 'fah_gpu_samples', 't2', 100000, '{}')"},
+  {"restart": true},
+  {"status": true},
+  {"queue": true},
+  {"local": {"cmd": "clickhouse", "id": 2, "config": {"enabled": true}}},
+  {"queue": true},
+  {"restart": true},
+  {"queue": true}
+]

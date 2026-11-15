@@ -1,0 +1,84 @@
+reply local ["clickhouse_status",{"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":null},1]
+file none
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://ch.example:8123","database":"fah","user":"writer","ca":"","queue_max":1000},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},2]
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"552ef32731d4d95c3c094abd40b04ee7dcb74498f876fee72408c50b33af2042"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:01:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log W :ClickHouse unavailable, queueing GPU telemetry (code 242)
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+log W :ClickHouse queue is full, dropped the oldest 611 rows
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"7bab3e27921a4ee059dff51fe5eb6bc59f8e932b7b5db442fc6d3872a834a65d"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:02:31.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:31.050","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:31.100","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 596 lines
+  {"time":"2026-11-13 12:03:00.950","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log I1:ClickHouse is reachable again
+request url=http://ch.example:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"7a4d131a6c71de2f3b9d564995e327d955faa199468db7c5444e60575133f486"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:03:21.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:27.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:03:33.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:04:21.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log W :ClickHouse rejected 11 rows, dropped them (code 27)
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:03:20Z","last_error":"ClickHouse:27: Cannot parse input: expected '\"' before: 'x'. (CANNOT_PARSE_INPUT_ASSERTION_FAILED)","last_error_code":27,"last_error_time":"2026-11-13T12:04:21Z","next_retry":null,"rows_sent":600,"rows_queued":0,"rows_dropped":622,"rows_truncated":0,"schema":1}
+reply local ["clickhouse_status",{"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:03:20Z","last_error":"ClickHouse:27: Cannot parse input: expected '\"' before: 'x'. (CANNOT_PARSE_INPUT_ASSERTION_FAILED)","last_error_code":27,"last_error_time":"2026-11-13T12:04:21Z","next_retry":null,"rows_sent":600,"rows_queued":0,"rows_dropped":622,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},3]
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://ch.example:8123, database fah, user writer, CA none, queue limit 1000, password set
+file 2026-11-13T12:00:00Z Started, 0 rows queued
+file 2026-11-13T12:00:00Z Connected to ClickHouse 25.7.5.34
+file 2026-11-13T12:01:06Z Failed to send 11 rows for fah_gpu_samples: HTTP 503, ClickHouse:242: Table fah.fah_gpu_samples is in readonly mode, query by writer:***. (TABLE_IS_READ_ONLY)
+file 2026-11-13T12:01:06Z ClickHouse unavailable: ClickHouse:242: Table fah.fah_gpu_samples is in readonly mode, query by writer:***. (TABLE_IS_READ_ONLY), next try at 2026-11-13T12:01:11Z
+file 2026-11-13T12:01:12Z Check request failed, step server: ClickHouse: Connection failed: Connection refused
+file 2026-11-13T12:01:12Z ClickHouse unavailable: ClickHouse: Connection failed: Connection refused, next try at 2026-11-13T12:01:22Z
+file 2026-11-13T12:01:30Z Check request failed, step server: ClickHouse: Timed out after 30s
+file 2026-11-13T12:01:30Z ClickHouse unavailable: ClickHouse: Timed out after 30s, next try at 2026-11-13T12:01:50Z
+file 2026-11-13T12:02:00Z Check request failed, step server: HTTP 502 from a server that is not ClickHouse
+file 2026-11-13T12:02:00Z ClickHouse unavailable: HTTP 502 from a server that is not ClickHouse, next try at 2026-11-13T12:02:40Z
+file 2026-11-13T12:03:00Z Queue full, dropped the oldest 611 rows
+file 2026-11-13T12:03:20Z Connected to ClickHouse 25.7.5.34
+file 2026-11-13T12:03:20Z Reachable again after 4 failed tries, 0 rows waiting
+file 2026-11-13T12:04:21Z Dropped 11 rows for fah_gpu_samples: HTTP 400, ClickHouse:27: Cannot parse input: expected '"' before: 'x'. (CANNOT_PARSE_INPUT_ASSERTION_FAILED)
+scan "ch.example" log=none
+scan "8123" log=none
+scan "writer" log=none
+scan "readonly" log=none
+scan "Connection refused" log=none
+scan "Bad Gateway" log=none
+scan "proxy.example" log=none
+scan "Cannot parse" log=none
+scan "next try" log=none
+scan "Reachable" log=none
+leak output=none log=none db=none logged=lines stored=yes

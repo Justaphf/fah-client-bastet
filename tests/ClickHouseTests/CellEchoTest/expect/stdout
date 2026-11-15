@@ -1,0 +1,100 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=11-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=11-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=11-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples: column time is DateTime, expected DateTime64(3, 'UTC')"},{"name":"insert","ok":null,"message":""}]},2]
+request url=http://localhost:8123 user=writer password=11-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: HTTP_FORBIDDEN","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=http://localhost:8123 user=writer password=11-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:497: writer: Not enough privileges. (ACCESS_DENIED)","code":497},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://localhost:8123 user=writer password=17-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=17-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=17-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')"},{"name":"insert","ok":null,"message":""}]},5]
+request url=http://localhost:8123 user=writer password=8-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=8-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=8-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')"},{"name":"insert","ok":null,"message":""}]},6]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: *** is wrong","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},7]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},8]
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://localhost:8123 user=writer password=4-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=4-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=4-chars timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')"},{"name":"insert","ok":null,"message":""}]},9]
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+file 2026-11-13T12:00:00Z Settings saved: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password not set
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse 25.7.5.34
+file 2026-11-13T12:00:00Z Test step database: ok, Database fah found
+file 2026-11-13T12:00:00Z Test step tables: failed, Table fah_gpu_samples: column time is DateTime, expected DateTime64(3, 'UTC')
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 403, ClickHouse:516: HTTP_FORBIDDEN
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: HTTP_FORBIDDEN
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 500, ClickHouse:497: writer: Not enough privileges. (ACCESS_DENIED)
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:497: writer: Not enough privileges. (ACCESS_DENIED)
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse
+file 2026-11-13T12:00:00Z Test step database: ok, Database fah found
+file 2026-11-13T12:00:00Z Test step tables: failed, Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse
+file 2026-11-13T12:00:00Z Test step database: ok, Database fah found
+file 2026-11-13T12:00:00Z Test step tables: failed, Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP 403, ClickHouse:516: *** is wrong
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: *** is wrong
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Settings saved: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password set
+file 2026-11-13T12:00:00Z Started, 0 rows queued
+file 2026-11-13T12:00:00Z Connected
+file 2026-11-13T12:00:00Z Test started: enabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test step server: ok, ClickHouse
+file 2026-11-13T12:00:00Z Test step database: ok, Database fah found
+file 2026-11-13T12:00:00Z Test step tables: failed, Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')
+file 2026-11-13T12:00:00Z Test step insert: not run
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=yes

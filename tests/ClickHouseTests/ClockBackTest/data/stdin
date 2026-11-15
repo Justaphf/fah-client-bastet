@@ -1,0 +1,12 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer"}, "password": "pw-test-1234"}},
+  {"respond": {"transport": "down"}},
+  {"status": true},
+  {"now": 1794571202},
+  {"pump": true},
+  {"status": true},
+  {"now": 1794571100},
+  {"pump": true},
+  {"status": true}
+]

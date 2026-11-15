@@ -1,0 +1,80 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1},"error":"Failed to save the settings: Failed to advance statement result: Abort due to constraint violation","code":"storage"},2]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200} password=set
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},3]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200} password=set
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1},"error":"Failed to save the settings: Failed to advance statement result: Abort due to constraint violation","code":"storage"},4]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200} password=unset
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},5]
+restart
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"other","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},6]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},7]
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"552ef32731d4d95c3c094abd40b04ee7dcb74498f876fee72408c50b33af2042"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:00:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:01:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+log W :Failed to queue ClickHouse rows: Failed to advance statement result: Abort due to constraint violation
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":"2026-11-13T12:01:06Z","last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":11,"rows_queued":0,"rows_dropped":11,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"e10b3d177d37b3fbd888f79f59da9fff3c4335db36dc9460697cbe8dbb18c245"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:02:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:24.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 12:02:30.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 12:03:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+queue 2 fah_gpu_samples rows=11 token=e10b3d177d37b3fbd888f79f59da9fff3c4335db36dc9460697cbe8dbb18c245
+log W :Failed to update ClickHouse units: Failed to advance statement result: Abort due to constraint violation
+request url=http://localhost:8123 user=writer password=9-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3"}
+  INSERT INTO `fah`.`fah_unit_events` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:03:24.000","machine_id":"machine-id-1","machine_name":"test-machine","unit_id":"U1","event":"start","gpus":["gpu:01:00:00"],"project":0,"run":0,"clone":0,"gen":0,"result":"","schema":1,"data":{"number":7,"group":"gpu","run_time":0}}
+dump clickhouse_units empty
+dump clickhouse_units U2=2026-11-13 12:03:36.000
+queue 3 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 4 fah_unit_events rows=1 token=b1e81224db9c7e93a49067fcb298e9a7ca81d746dbf0b6a304eafa81e63bd6e5
+log W :Failed to queue ClickHouse rows: Failed to prepare statement: INSERT INTO clickhouse_queue (id, dest, token, rows, data) VALUES (?, ?, ?, ?, ?): table clickhouse_queue has no column named dest
+log W :Failed to read ClickHouse queue: Failed to prepare statement: SELECT coalesce(sum(rows), 0), coalesce(max(id), 0) FROM clickhouse_queue: no such column: rows
+log W :Failed to read ClickHouse units: Failed to advance statement result: SQL error or missing database
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  SELECT version()
+restart
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":3,"rows_dropped":0,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":5,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 3 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 4 fah_unit_events rows=1 token=b1e81224db9c7e93a49067fcb298e9a7ca81d746dbf0b6a304eafa81e63bd6e5
+log W :Failed to read ClickHouse queue: Failed to advance statement result: SQL error or missing database
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  SELECT version()
+restart
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":3,"rows_truncated":0,"schema":1}
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":6,"rows_dropped":3,"rows_truncated":0,"schema":1}
+queue 3 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 4 fah_unit_events rows=1 token=b1e81224db9c7e93a49067fcb298e9a7ca81d746dbf0b6a304eafa81e63bd6e5
+queue 5 fah_gpu_samples rows=4 token=50890bec44b7678d20268bc8349d88ffc789e339be1ce99bb6ec606ed50e5a21
+log W :Failed to read the ClickHouse settings
+restart
+reply local ["clickhouse",{"config":{"enabled":false,"url":"","database":"","user":"","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":6,"rows_dropped":0,"rows_truncated":0,"schema":1},"error":"Failed to read the saved settings","code":"storage"},20]
+request url=http://localhost:8123 user=writer password=9-chars timeout=30
+  SELECT version()
+restart
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":6,"rows_dropped":0,"rows_truncated":0,"schema":1}},21]
+stored settings={"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200} password=set
+leak output=none log=none db=none logged=lines stored=yes

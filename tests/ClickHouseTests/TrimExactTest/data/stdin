@@ -1,0 +1,12 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer", "queue_max": 1000}, "password": "pw-test-1234"}},
+  {"respond": {"transport": "down"}},
+  {"sample": {"time": 1794571201, "power": 10}, "repeat": 600, "step": 0.001},
+  {"sample": {"time": 1794571202, "power": 10}, "repeat": 400, "step": 0.001},
+  {"now": 1794571270},
+  {"pump": true},
+  {"sample": {"time": 1794571271, "power": 10}, "repeat": 600, "step": 0.001},
+  {"status": true},
+  {"queue": true}
+]

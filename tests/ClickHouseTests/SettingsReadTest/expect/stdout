@@ -1,0 +1,31 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":1000000},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :Failed to read the ClickHouse settings
+restart
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":300000,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_gpu_samples rows=200000 token=t1
+queue 2 fah_gpu_samples rows=100000 token=t2
+reply local ["clickhouse",{"config":{"enabled":false,"url":"","database":"","user":"","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":300000,"rows_dropped":0,"rows_truncated":0,"schema":1},"error":"Failed to read the saved settings","code":"storage"},2]
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":300000,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"t1"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {}
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":300004,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_gpu_samples rows=200000 token=t1
+queue 2 fah_gpu_samples rows=100000 token=t2
+queue 3 fah_gpu_samples rows=3 token=48996a67659a5f9ac51f4b27118eeb6319348088b551592ecbbb1a4fc6f1c48b
+stored settings={"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":1000000} password=set
+leak output=none log=none db=none logged=lines stored=yes

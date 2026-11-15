@@ -1,0 +1,18 @@
+[
+  {"now": 1794571200},
+  {"unit": {"id": "U1\r\n2026-11-13T00:00:00Z Forged line\t\u001b\u007fend", "number": 7, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer"}, "password": "pw-test-1234"}},
+  {"respond": {"body": {"meta": [{"name": "version()", "type": "String"}], "data": [["25.7.5.34"]], "rows": 1}}},
+  {"respond": {"body": {"data": [["fah"]]}}},
+  {"respond": {"body": {"data": []}}},
+  {"respond": {}},
+  {"respond": {}},
+  {"local": {"cmd": "clickhouse_test", "id": 2}},
+  {"respond": {"status": 500, "code": 999, "body": "Code: 999. DB::Exception: bad\r\n2026-11-13T00:00:00Z Forged line\t\u001b[31m\u007fend"}},
+  {"sql": "ALTER TABLE config RENAME TO config_real"},
+  {"sql": "CREATE VIEW config AS SELECT name, CASE WHEN name = 'clickhouse' THEN abs((-9223372036854775807 - 1) * (length(name) - 9)) ELSE value END AS value FROM config_real"},
+  {"restart": true},
+  {"now": 1794571210},
+  {"finish": "U1\r\n2026-11-13T00:00:00Z Forged line\t\u001b\u007fend", "result": "credited"},
+  {"file": true}
+]

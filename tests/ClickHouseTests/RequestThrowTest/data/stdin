@@ -1,0 +1,9 @@
+[
+  {"now": 1794571200},
+  {"throw": "marked-text-27c1 ch.example.org"},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "https://ch.example.org", "database": "fah", "user": "writer"}, "password": "pw-test-1234"}},
+  {"status": true},
+  {"throw": "marked-text-27c2 ch.example.org"},
+  {"local": {"cmd": "clickhouse_test", "id": 2}},
+  {"scan": ["marked-text-27c1", "marked-text-27c2", "ch.example.org"]}
+]

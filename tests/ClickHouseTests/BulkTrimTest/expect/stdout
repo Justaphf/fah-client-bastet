@@ -1,0 +1,15 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse unavailable, queueing GPU telemetry
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":6000,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+log W :ClickHouse queue is full, dropped the oldest 5400 rows
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":1000},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":600,"rows_dropped":5400,"rows_truncated":0,"schema":1}},2]
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":600,"rows_dropped":5400,"rows_truncated":0,"schema":1}
+queue 10 fah_gpu_samples rows=600 token=c8547609f6fa44bc3416a931465966254d72502a2e5aa54f53ded8e6c9b96d0f

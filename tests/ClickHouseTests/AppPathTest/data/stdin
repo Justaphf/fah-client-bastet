@@ -1,0 +1,16 @@
+[
+  {"app": {"cmd": "clickhouse", "id": 1,
+           "config": {"url": "http://localhost:8123", "database": "fah",
+                      "user": "writer"},
+           "password": "app-path-pw-777"}, "peer": "127.0.0.1"},
+  {"app": {"cmd": "clickhouse", "id": 2, "password": "app-path-pw-777",
+           "config": {"database": "bad name"}}, "peer": "::1"},
+  {"app": {"cmd": "clickhouse_status", "id": 3}, "peer": "127.0.0.1"},
+  {"app": {"cmd": "clickhouse", "id": 4, "password": "app-path-pw-777"},
+   "peer": "192.168.0.10", "name": "lan"},
+  {"app": {"cmd": "clickhouse_test", "id": 5, "password": "app-path-pw-777",
+           "config": {"url": "ftp://bad"}}, "peer": "127.0.0.1"},
+  {"stored": true},
+  {"tables": true},
+  {"leak": "app-path-pw-777"}
+]

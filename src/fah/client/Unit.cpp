@@ -1042,6 +1042,7 @@ void Unit::clean(const string &result) {
     insert("result", result);
     updateGPUStats();
     TRY_CATCH_ERROR(app.logWU(*this));
+    app.getGPUs().getClickHouse().finish(*this);
 
     // Remove from disk
     TRY_CATCH_ERROR(SystemUtilities::rmdir(getDirectory(), true));

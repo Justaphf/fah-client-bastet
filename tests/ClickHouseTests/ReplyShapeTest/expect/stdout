@@ -1,0 +1,160 @@
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},1]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"HTTP 200 from a server that is not ClickHouse"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},5]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},6]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},7]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"Unexpected reply from the server"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},8]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"The server did not report a ClickHouse version"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},9]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"The server did not report a ClickHouse version"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},10]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"HTTP 204 from a server that is not ClickHouse"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},11]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"HTTP 302 from a server that is not ClickHouse"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},12]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":false,"message":"Unexpected reply from the server"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},13]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Unexpected reply from the server"},{"name":"insert","ok":null,"message":""}]},14]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Unexpected reply from the server"},{"name":"insert","ok":null,"message":""}]},15]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Unexpected reply from the server"},{"name":"insert","ok":null,"message":""}]},16]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Unexpected reply from the server"},{"name":"insert","ok":null,"message":""}]},17]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=default password=none timeout=10
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Created fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},18]
+status {"enabled":false,"configured":false,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse settings or permissions are wrong, queueing GPU telemetry
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T13:30:00Z","next_retry":"2026-11-13T13:45:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T15:00:00Z","next_retry":"2026-11-13T15:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T15:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"617a314b9e16ea21e6173c1fab80192c638b51515e9f1ca4806e3f420462ed89"}
+  INSERT INTO `fah`.`fah_gpu_samples` FORMAT JSONEachRow
+  {"time":"2026-11-13 16:30:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 16:30:12.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  {"time":"2026-11-13 16:30:18.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+  ... 7 lines
+  {"time":"2026-11-13 16:31:06.000","machine_id":"machine-id-1","machine_name":"test-machine","gpu_id":"gpu:01:00:00","gpu_name":"","gpu_uuid":"","units":[],"schema":1,"data":{"power":10,"fans":[],"weight":1,"interval":1,"energy_rate":0.17}}
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T16:31:06Z","next_retry":"2026-11-13T16:46:06Z","rows_sent":0,"rows_queued":11,"rows_dropped":0,"rows_truncated":0,"schema":1}
+queue 1 fah_gpu_samples rows=11 token=617a314b9e16ea21e6173c1fab80192c638b51515e9f1ca4806e3f420462ed89
+scan "hello there" log=none
+scan "moved" log=none
+scan "25.7; DROP" log=none
+scan "777777" log=none
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 23.8.8.21.altinitystable"},{"name":"database","ok":false,"message":"Database fah does not exist or this user cannot access it"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},30]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"The server did not report a ClickHouse version"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},31]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"The server did not report a ClickHouse version"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},32]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"The server did not report a ClickHouse version"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},33]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":false,"message":"Database fah does not exist or this user cannot access it"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},34]
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T16:31:06Z","next_retry":"2026-11-13T16:46:06Z","rows_sent":0,"rows_queued":11,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.1+lts_x-1"},{"name":"database","ok":false,"message":"Database fah does not exist or this user cannot access it"},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},35]
+request url=http://localhost:8123 user=writer password=12-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: no","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},36]
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"Unexpected reply from the server","last_error_code":null,"last_error_time":"2026-11-13T16:31:06Z","next_retry":"2026-11-13T16:46:06Z","rows_sent":0,"rows_queued":11,"rows_dropped":0,"rows_truncated":0,"schema":1}

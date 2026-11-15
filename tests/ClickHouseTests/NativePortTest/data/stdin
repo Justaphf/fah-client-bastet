@@ -1,0 +1,13 @@
+[
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"url": "http://localhost", "database": "fah", "user": "writer"}}},
+  {"local": {"cmd": "clickhouse_test", "id": 2}},
+  {"respond": {"transport": "Invalid response"}},
+  {"local": {"cmd": "clickhouse_test", "id": 3, "config": {"url": "https://ch.example.org"}}},
+  {"respond": {"transport": "Invalid response"}},
+  {"local": {"cmd": "clickhouse_test", "id": 4, "config": {"url": "https://ch.example.org"}}},
+  {"respond": {"transport": "Connect Failed"}},
+  {"local": {"cmd": "clickhouse_test", "id": 5, "config": {"url": "https://ch.example.org"}}},
+  {"respond": {"timeout": true}},
+  {"local": {"cmd": "clickhouse_test", "id": 6}},
+  {"respond": {"timeout": true}}
+]

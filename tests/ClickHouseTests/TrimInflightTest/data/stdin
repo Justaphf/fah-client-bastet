@@ -1,0 +1,17 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer", "queue_max": 1000}, "password": "pw-test-1234"}},
+  {"respond": {"body": {"meta": [{"name": "version()", "type": "String"}], "data": [["25.7.5.34"]], "rows": 1}}},
+  {"respond": {"body": {"data": [["fah"]]}}},
+  {"respond": {"body": {"data": []}}},
+  {"respond": {}},
+  {"respond": {}},
+  {"sample": {"time": 1794571201, "power": 10}, "repeat": 600, "step": 0.001},
+  {"queue": true},
+  {"sample": {"time": 1794571202, "power": 10}, "repeat": 600, "step": 0.001},
+  {"status": true},
+  {"queue": true},
+  {"respond": {}},
+  {"status": true},
+  {"queue": true}
+]

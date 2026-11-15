@@ -1,0 +1,20 @@
+[
+  {"now": 1794571200},
+  {"tables": true},
+  {"local": {"cmd": "clickhouse", "id": 1,
+             "config": {"enabled": true, "url": "localhost:8443",
+                        "database": "fah", "user": "writer"},
+             "password": "pw-test-1234"}},
+  {"pump": true},
+  {"respond": {"body": {"meta": [{"name": "version()", "type": "String"}],
+                        "data": [["25.7.5.34"]], "rows": 1}}},
+  {"respond": {"body": {"data": [["fah"]]}}},
+  {"respond": {"body": {"data": []}}},
+  {"status": true},
+  {"respond": {}},
+  {"respond": {}},
+  {"respond": {}},
+  {"local": {"cmd": "clickhouse_status", "id": 2}},
+  {"tables": true},
+  {"stored": true}
+]

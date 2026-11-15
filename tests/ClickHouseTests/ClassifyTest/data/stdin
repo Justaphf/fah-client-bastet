@@ -1,0 +1,30 @@
+[
+  {"classify": [
+    {"status": 200},
+    {"status": 200, "body": {"data": [["25.7.5.34"]]}},
+    {"transport": "Connection refused"},
+    {"timeout": true},
+    {"status": 500, "code": 159, "body": "Code: 159. DB::Exception: Timeout exceeded. (TIMEOUT_EXCEEDED)"},
+    {"status": 403, "code": 516, "body": "Code: 516. DB::Exception: writer: Authentication failed. (AUTHENTICATION_FAILED)"},
+    {"status": 500, "code": 497, "body": "Code: 497. DB::Exception: writer: Not enough privileges. (ACCESS_DENIED)"},
+    {"status": 404, "code": 60, "body": "Code: 60. DB::Exception: Unknown table. (UNKNOWN_TABLE)"},
+    {"status": 404, "code": 81, "body": "Code: 81. DB::Exception: Database fah does not exist. (UNKNOWN_DATABASE)"},
+    {"status": 500, "code": 164, "body": "Code: 164. DB::Exception: Cannot execute query in readonly mode. (READONLY)"},
+    {"status": 400, "code": 62, "body": "Code: 62. DB::Exception: Syntax error. (SYNTAX_ERROR)"},
+    {"status": 400, "code": 27, "body": "Code: 27. DB::Exception: Cannot parse input. (CANNOT_PARSE_INPUT_ASSERTION_FAILED)"},
+    {"status": 400, "code": 26, "body": "Code: 26. DB::Exception: Cannot parse quoted string. (CANNOT_PARSE_QUOTED_STRING)"},
+    {"status": 500, "code": 53, "body": "Code: 53. DB::Exception: Type mismatch. (TYPE_MISMATCH)"},
+    {"status": 500, "code": 241, "body": "Code: 241. DB::Exception: Memory limit exceeded. (MEMORY_LIMIT_EXCEEDED)"},
+    {"status": 503},
+    {"status": 502, "body": "Bad Gateway"},
+    {"status": 401},
+    {"status": 403, "body": "Forbidden"},
+    {"status": 404, "body": "Not Found"},
+    {"status": 204},
+    {"status": 302, "body": "moved"},
+    {"status": 200, "body": "not json"},
+    {"status": 408},
+    {"status": 429},
+    {"status": 500, "code": 243, "body": "Code: 243. DB::Exception: Not enough space. (NOT_ENOUGH_SPACE)"}
+  ]}
+]

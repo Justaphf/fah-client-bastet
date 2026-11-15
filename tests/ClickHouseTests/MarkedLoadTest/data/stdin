@@ -1,0 +1,16 @@
+[
+  {"now": 1794571200},
+  {"unit": {"id": "U1", "number": 7, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"unit": {"id": "U2", "number": 8, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"set": ["clickhouse_units", "U1", "2026-11-13 12:00:00.000"]},
+  {"set": ["clickhouse_units", "U2", "2026-11-13 12:00:00.000"]},
+  {"sql": "CREATE TABLE IF NOT EXISTS clickhouse_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, dest TEXT NOT NULL, token TEXT NOT NULL, rows INTEGER NOT NULL, data TEXT NOT NULL)"},
+  {"sql": "ALTER TABLE clickhouse_queue RENAME TO queue_real"},
+  {"sql": "CREATE VIEW clickhouse_queue AS SELECT id, dest, rows, data FROM queue_real"},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer"}, "password": "pw-test-1234"}},
+  {"started": true},
+  {"unit": {"id": "U3", "number": 9, "group": "gpu", "state": "RUN", "gpus": ["gpu:01:00:00"]}},
+  {"local": {"cmd": "clickhouse", "id": 2, "config": {"enabled": false}}},
+  {"local": {"cmd": "clickhouse", "id": 3, "config": {"enabled": true}}},
+  {"started": true}
+]

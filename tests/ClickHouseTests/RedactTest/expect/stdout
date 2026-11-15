@@ -1,0 +1,49 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://ch-host.example:8123","database":"fahdb","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse settings or permissions are wrong, queueing GPU telemetry (code 516)
+status {"enabled":true,"configured":true,"state":"config_error","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://ch-host.example:8123 user=writer password=2-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:999: got *** and ***","code":999},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"HTTP 500 from a server that is not ClickHouse"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:1001: long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text long text lon...","code":1001},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30
+  SELECT version()
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30 params={"db":"fahdb"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30 params={"db":"fahdb"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fahdb`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fahdb`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":"ClickHouse:516: writer: password *** is wrong. (AUTHENTICATION_FAILED)","last_error_code":516,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+leak output=none log=none db=none logged=lines stored=yes
+scan "ch-host" log=none
+scan "CH-Host" log=none
+scan "8123" log=none
+scan "fahdb" log=none
+scan "writer" log=none
+scan "25.7.5.34" log=none
+scan "is wrong" log=none
+scan "secret internal" log=none
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=10
+  SELECT version()
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=10 params={"db":"fahdb"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://ch-host.example:8123 user=writer password=3-chars timeout=10 params={"db":"fahdb"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fahdb found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples: column time is ***, expected DateTime64(3, 'UTC')"},{"name":"insert","ok":null,"message":""}]},10]
+request url=http://ch-host.example:8123 user=writer password=10-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:1002: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...","code":1002},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},11]
+request url=http://ch-host.example:8123 user=writer password=10-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:1003: saw ***","code":1003},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},12]
+leak output=none log=none db=none logged=lines stored=yes

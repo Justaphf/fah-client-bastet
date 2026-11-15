@@ -1,0 +1,28 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_gpu_samples` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `gpu_id` String, `gpu_name` String, `gpu_uuid` String, `units` Array(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, gpu_id, time) SETTINGS non_replicated_deduplication_window = 10000
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  CREATE TABLE IF NOT EXISTS `fah`.`fah_unit_events` (`time` DateTime64(3, 'UTC'), `machine_id` String, `machine_name` String, `unit_id` String, `event` LowCardinality(String), `gpus` Array(String), `project` UInt32, `run` UInt32, `clone` UInt32, `gen` UInt32, `result` LowCardinality(String), `schema` UInt16, `data` JSON) ENGINE = MergeTree PARTITION BY toYYYYMM(time) ORDER BY (machine_id, unit_id, time) SETTINGS non_replicated_deduplication_window = 10000
+log I1:Connected to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 settings={"insert_deduplicate":1,"insert_deduplication_token":"ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3"}
+  INSERT INTO `fah`.`fah_unit_events` FORMAT JSONEachRow
+  {"time":"2026-11-13 12:00:01.000","machine_id":"machine-id-1","machine_name":"test-machine","unit_id":"U1","event":"start","gpus":["gpu:01:00:00"],"project":0,"run":0,"clone":0,"gen":0,"result":"","schema":1,"data":{"number":7,"group":"gpu","run_time":0}}
+started U1 U2 U3
+log W :Failed to queue ClickHouse rows: Failed to advance statement result: Abort due to constraint violation
+started U2 U3
+started U3
+started none
+status {"enabled":true,"configured":true,"state":"ok","connected":true,"testing":false,"server_version":"25.7.5.34","last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":5,"rows_dropped":3,"rows_truncated":0,"schema":1}
+queue 1 fah_unit_events rows=1 token=ae2d81c843b6688ba9f96503f5254eed835761167f8ab135dc6911ecff299bb3
+queue 2 fah_unit_events rows=1 token=b1e81224db9c7e93a49067fcb298e9a7ca81d746dbf0b6a304eafa81e63bd6e5
+queue 3 fah_unit_events rows=1 token=b687e37c939d480a4df0d76a71b12123f88594503e20b1664a0f82d15e311cd6
+queue 4 fah_unit_events rows=1 token=d08b13f5323cc53ec23843a05795b3b892c4372c4be179ff5bce8e3b2adadef6
+dump clickhouse_units U1=2026-11-13 12:00:01.000
+dump clickhouse_units U2=2026-11-13 12:00:01.000

@@ -1,0 +1,20 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": false, "url": "http://localhost:8123", "database": "fah", "user": "writer"}}},
+  {"local": {"cmd": "clickhouse_test", "id": 2, "password": "HTTP_FORBIDDEN suffix"}},
+  {"respond": {"status": "HTTP_FORBIDDEN suffix", "code": 516}},
+  {"local": {"cmd": "clickhouse_test", "id": 3, "password": " http-forbidden"}},
+  {"respond": {"status": " http-forbidden", "code": 516}},
+  {"local": {"cmd": "clickhouse_test", "id": 4, "password": "http-not-found  Extra words"}},
+  {"respond": {"status": "http-not-found  Extra words", "code": 516}},
+  {"local": {"cmd": "clickhouse_test", "id": 5, "password": "Http_Bad_Gateway x"}},
+  {"respond": {"status": "Http_Bad_Gateway x"}},
+  {"local": {"cmd": "clickhouse_test", "id": 6, "password": "403 tail"}},
+  {"respond": {"status": "403 tail", "code": 516}},
+  {"file": true},
+  {"leak": "HTTP_FORBIDDEN suffix"},
+  {"leak": " http-forbidden"},
+  {"leak": "http-not-found  Extra words"},
+  {"leak": "Http_Bad_Gateway x"},
+  {"leak": "403 tail"}
+]

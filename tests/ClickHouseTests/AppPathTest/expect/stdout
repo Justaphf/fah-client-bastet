@@ -1,0 +1,10 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply app ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+reply app ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1},"error":"Database name must be letters, digits and underscores and not start with a digit","code":"invalid"},2]
+reply app ["clickhouse_status",{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1,"log":"<cwd>/external-tsdb.log"},3]
+log W :Refused ClickHouse commands from lan, only allowed on a local connection
+reply lan ["clickhouse",{"error":"Not available on this connection","code":"local_only"},4]
+reply app ["clickhouse_test",{"ok":false,"steps":[],"error":"URL must start with http:// or https://","code":"invalid"},5]
+stored settings={"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200} password=set
+tables
+leak output=none log=none db=none logged=lines stored=yes

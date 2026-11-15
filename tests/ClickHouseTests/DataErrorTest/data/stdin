@@ -1,0 +1,23 @@
+[
+  {"now": 1794571200},
+  {"local": {"cmd": "clickhouse", "id": 1, "config": {"enabled": true, "url": "http://localhost:8123", "database": "fah", "user": "writer"}}},
+  {"respond": {"body": {"meta": [{"name": "version()", "type": "String"}], "data": [["25.7.5.34"]], "rows": 1}}},
+  {"respond": {"body": {"data": [["fah"]]}}},
+  {"respond": {"body": {"data": []}}},
+  {"respond": {}},
+  {"respond": {}},
+  {"sample": {"time": 1794571206, "power": 10}, "repeat": 22, "step": 6},
+  {"respond": {"status": 400, "code": 27, "body": "Code: 27. DB::Exception: Cannot parse input: expected '\"' before: 'x'. (CANNOT_PARSE_INPUT_ASSERTION_FAILED) (version 25.7.5.34 (official build))"}},
+  {"status": true},
+  {"queue": true},
+  {"respond": {"status": 500, "code": 53, "body": "Code: 53. DB::Exception: Type mismatch. (TYPE_MISMATCH)"}},
+  {"status": true},
+  {"queue": true},
+  {"sample": {"time": 1794571338, "power": 10}, "repeat": 11, "step": 6},
+  {"respond": {}},
+  {"sample": {"time": 1794571404, "power": 10}, "repeat": 11, "step": 6},
+  {"respond": {"status": 400, "code": 26, "body": "Code: 26. DB::Exception: Cannot parse quoted string. (CANNOT_PARSE_QUOTED_STRING)"}},
+  {"status": true},
+  {"queue": true},
+  {"scan": ["Cannot parse"]}
+]

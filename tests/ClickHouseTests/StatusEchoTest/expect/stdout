@@ -1,0 +1,53 @@
+log I1:Not sending GPU telemetry to ClickHouse
+reply local ["clickhouse",{"config":{"enabled":false,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":false,"status":{"enabled":false,"configured":true,"state":"disabled","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=21-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: ***","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+request url=http://localhost:8123 user=writer password=15-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: ***","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},3]
+request url=http://localhost:8123 user=writer password=27-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: ***","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://localhost:8123 user=writer password=18-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"HTTP *** from a server that is not ClickHouse"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},5]
+request url=http://localhost:8123 user=writer password=8-chars timeout=10
+  SELECT version()
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse:516: ***","code":516},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},6]
+file 2026-11-13T12:00:00Z Settings saved: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password not set
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: HTTP *** from a server that is not ClickHouse
+file 2026-11-13T12:00:00Z Test step server: failed, HTTP *** from a server that is not ClickHouse
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+file 2026-11-13T12:00:00Z Test started: disabled, url http://localhost:8123, database fah, user writer, CA none, queue limit 259200, password given
+file 2026-11-13T12:00:00Z Test request failed, step server: ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step server: failed, ClickHouse:516: ***
+file 2026-11-13T12:00:00Z Test step database: not run
+file 2026-11-13T12:00:00Z Test step tables: not run
+file 2026-11-13T12:00:00Z Test step insert: not run
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no
+leak output=none log=none db=none logged=lines stored=no

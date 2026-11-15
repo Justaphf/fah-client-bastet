@@ -1,0 +1,222 @@
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},1]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},2]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},3]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples does not deduplicate inserts, run ALTER TABLE fah_gpu_samples MODIFY SETTING non_replicated_deduplication_window = 10000"},{"name":"insert","ok":null,"message":""}]},4]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},5]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},6]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},7]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":false,"message":"Table fah_gpu_samples is not a MergeTree table"},{"name":"insert","ok":null,"message":""}]},8]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},9]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},10]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},11]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},12]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},13]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},14]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},15]
+request url=http://localhost:8123 user=default password=none timeout=10
+  SELECT version()
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_gpu_samples` (`time`) SELECT now64(3) WHERE 0
+request url=http://localhost:8123 user=default password=none timeout=10
+  INSERT INTO `fah`.`fah_unit_events` (`time`) SELECT now64(3) WHERE 0
+reply local ["clickhouse_test",{"ok":true,"steps":[{"name":"server","ok":true,"message":"ClickHouse 25.7.5.34"},{"name":"database","ok":true,"message":"Database fah found"},{"name":"tables","ok":true,"message":"Found fah_gpu_samples, fah_unit_events (deduplication not verified)"},{"name":"insert","ok":true,"message":"Inserts allowed, no rows written"}]},16]
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+log W :ClickHouse tables are not compatible, queueing GPU telemetry
+status {"enabled":true,"configured":true,"state":"schema_mismatch","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"Table fah_gpu_samples does not deduplicate inserts, run ALTER TABLE fah_gpu_samples MODIFY SETTING non_replicated_deduplication_window = 10000","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:15:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name FROM system.databases WHERE name = {db:String}
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT table, name, type FROM system.columns WHERE database = {db:String} AND table IN ('fah_gpu_samples', 'fah_unit_events')
+request url=http://localhost:8123 user=writer password=12-chars timeout=30 params={"db":"fah"}
+  SELECT name, engine, engine_full FROM system.tables WHERE database = {db:String} AND name IN ('fah_gpu_samples', 'fah_unit_events')
+log W :ClickHouse unavailable, queueing GPU telemetry
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: Connection refused","last_error_code":null,"last_error_time":"2026-11-13T12:15:00Z","next_retry":"2026-11-13T12:20:00Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}

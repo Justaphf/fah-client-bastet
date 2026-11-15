@@ -1,0 +1,8 @@
+log I1:Sending GPU telemetry to ClickHouse
+log W :ClickHouse unavailable, queueing GPU telemetry
+reply local ["clickhouse",{"config":{"enabled":true,"url":"https://ch.example.org","database":"fah","user":"writer","ca":"","queue_max":259200},"password_set":true,"status":{"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Request failed: marked-text-27c1 ch.example.org (with https, check the CA)","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Request failed: marked-text-27c1 ch.example.org (with https, check the CA)","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}
+reply local ["clickhouse_test",{"ok":false,"steps":[{"name":"server","ok":false,"message":"ClickHouse: Request failed: marked-text-27c2 ch.example.org (with https, check the CA)"},{"name":"database","ok":null,"message":""},{"name":"tables","ok":null,"message":""},{"name":"insert","ok":null,"message":""}]},2]
+scan "marked-text-27c1" log=none
+scan "marked-text-27c2" log=none
+scan "ch.example.org" log=none

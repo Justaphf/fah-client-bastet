@@ -1,0 +1,4 @@
+{
+  "command": "%(suite-dir)s/clickHouse",
+  "args": "--log-to-screen=false --verbosity=5"
+}

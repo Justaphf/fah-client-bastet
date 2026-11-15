@@ -1,0 +1,19 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=default password=none timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":1000},"password_set":false,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse unavailable, queueing GPU telemetry
+log W :ClickHouse queue is full, dropped the oldest 600 rows
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: Connection refused","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":900,"rows_dropped":600,"rows_truncated":0,"schema":1}
+queue 2 fah_gpu_samples rows=600 token=1d27fad98d79343a73b646ad0047f729104e93da72009e0b9ab50609cffc7134
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: Connection refused","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":"2026-11-13T12:00:05Z","rows_sent":0,"rows_queued":1500,"rows_dropped":600,"rows_truncated":0,"schema":1}
+queue 2 fah_gpu_samples rows=600 token=1d27fad98d79343a73b646ad0047f729104e93da72009e0b9ab50609cffc7134
+queue 3 fah_gpu_samples rows=301 token=0dbbfd9e2e4ac67a21bbb36aa481f8a81d75481e302754d3cae8d233628af26b
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=default password=none timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"","ca":"","queue_max":5000},"password_set":false,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: Connection refused","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":1500,"rows_dropped":600,"rows_truncated":0,"schema":1}},2]
+status {"enabled":true,"configured":true,"state":"retrying","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: Connection refused","last_error_code":null,"last_error_time":"2026-11-13T12:00:02Z","next_retry":"2026-11-13T12:00:07Z","rows_sent":0,"rows_queued":2100,"rows_dropped":600,"rows_truncated":0,"schema":1}
+queue 2 fah_gpu_samples rows=600 token=1d27fad98d79343a73b646ad0047f729104e93da72009e0b9ab50609cffc7134
+queue 3 fah_gpu_samples rows=301 token=0dbbfd9e2e4ac67a21bbb36aa481f8a81d75481e302754d3cae8d233628af26b
+queue 4 fah_gpu_samples rows=600 token=3e6ed5fcbb8ee9a45763f8c0dc09ee23ae6630ab04bba0ecac67d3c6f170f53c

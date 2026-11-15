@@ -1,0 +1,11 @@
+log I1:Sending GPU telemetry to ClickHouse
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+reply local ["clickhouse",{"config":{"enabled":true,"url":"http://localhost:8123","database":"fah","user":"writer","ca":"","queue_max":1000},"password_set":true,"status":{"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":null,"last_error_code":null,"last_error_time":null,"next_retry":null,"rows_sent":0,"rows_queued":0,"rows_dropped":0,"rows_truncated":0,"schema":1}},1]
+log W :ClickHouse unavailable, queueing GPU telemetry
+request url=http://localhost:8123 user=writer password=12-chars timeout=30
+  SELECT version()
+log W :ClickHouse queue is full, dropped the oldest 600 rows
+status {"enabled":true,"configured":true,"state":"connecting","connected":false,"testing":false,"server_version":null,"last_success":null,"last_error":"ClickHouse: Connection failed: down","last_error_code":null,"last_error_time":"2026-11-13T12:00:00Z","next_retry":null,"rows_sent":0,"rows_queued":1000,"rows_dropped":600,"rows_truncated":0,"schema":1}
+queue 2 fah_gpu_samples rows=400 token=7a9599786601309e6c8548c13b88e02270c9da9bd5fddccdb3cc90ae262eb7a3
+queue 3 fah_gpu_samples rows=600 token=79b845be271770d9bdf5168b487f69da1aa658e51cfda81653589861a38a3124

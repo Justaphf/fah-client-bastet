@@ -80,9 +80,10 @@ GPUResources::GPUResources(App &app) :
   updateEvent(app.getEventBase().newEvent([this] {update();}, 0)),
   detectEvent(app.getEventBase().newEvent([this] {detect();}, 0)),
   telemetryEvent(app.getEventBase().newEvent([this] {telemetry();}, 0)),
-  history(new GPUHistory(app)) {
+  history(new GPUHistory(app)), clickHouse(new ClickHouseSink(app)) {
   sinks.push_back(new UnitStatsSink(app));
   sinks.push_back(history);
+  sinks.push_back(clickHouse);
   updateEvent->activate();
 }
 
